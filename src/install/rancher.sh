@@ -6,5 +6,6 @@ sudo docker run -d \
   -p 80:80 \
   -p 443:443 \
   -v /opt/rancher:/var/lib/rancher \
-  rancher/rancher
+  rancher/rancher \
+  --acme-domain $RANCHER_HOST
 
