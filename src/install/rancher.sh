@@ -1,5 +1,10 @@
 #!/bin/bash
 
+src_dir=$(readlink -f "$(dirname "$0")")/../..
+
+cp $src_dir/.envrc.example $src_dir/.envrc
+source $src_dir/.envrc.example
+
 sudo docker run -d \
   --restart=unless-stopped \
   --name=rancher \
