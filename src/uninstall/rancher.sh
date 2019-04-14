@@ -1,8 +1,8 @@
 #!/bin/bash
 
-sudo docker rm -f $(docker ps -qa)
-sudo docker rmi -f $(docker images -q)
-sudo docker volume rm $(docker volume ls -q)
+sudo docker rm -f $(sudo docker ps -qa)
+sudo docker rmi -f $(sudo docker images -q)
+sudo docker volume rm $(sudo docker volume ls -q)
 
 for mount in $(mount | grep tmpfs | grep '/var/lib/kubelet' | awk '{ print $3 }') /var/lib/kubelet /var/lib/rancher; do umount $mount; done
 
