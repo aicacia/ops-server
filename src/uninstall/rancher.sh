@@ -4,7 +4,7 @@ sudo docker rm -f $(sudo docker ps -qa)
 sudo docker rmi -f $(sudo docker images -q)
 sudo docker volume rm $(sudo docker volume ls -q)
 
-for mount in $(mount | grep tmpfs | grep '/var/lib/kubelet' | awk '{ print $3 }') /var/lib/kubelet /var/lib/rancher; do umount $mount; done
+for mount in $(mount | grep tmpfs | grep '/var/lib/kubelet' | awk '{ print $3 }') /var/lib/kubelet /var/lib/rancher; do sudo umount $mount; done
 
 sudo rm -rf /etc/ceph \
        /etc/cni \
