@@ -1,1 +1,1 @@
-export RANCHER_HOST=rancher.stembord.com
+export HOST=localhost

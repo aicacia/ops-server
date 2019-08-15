@@ -1,0 +1,7 @@
+master:
+  jenkinsUriPrefix: /jenkins
+  ingress:
+    enabled: true
+    path: /jenkins
+    annotations:
+      ingress.kubernetes.io/rewrite-target: /
