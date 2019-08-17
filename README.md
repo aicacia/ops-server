@@ -9,14 +9,8 @@ $ direnv allow
 $ source .envrc
 ```
 
-## Rancher
+## Local
 
 ```bash
-$ ./src/rancher.sh
-```
-
-## Rancher Node
-
-```bash
-$ ./src/node.sh
+$ ./src/run.sh
 ```
