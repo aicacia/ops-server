@@ -1,0 +1,5 @@
+ingress:
+  enabled: true
+  path: /
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "1000m"

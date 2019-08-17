@@ -5,10 +5,10 @@ dir=$(readlink -f "$(dirname "$0")")
 source $dir/../functions.sh
 
 helm install stable/kubernetes-dashboard \
-  --name dashboard \
-  --namespace kube-system \
-  --set service.type=NodePort \
-  --set service.nodePort=31000 \
-  --set enableSkipLogin=true
+  --name kubernetes-dashboard \
+  --namespace ci \
+  --values $dir/values.yaml
 
-# wait_for_deployment "dashboard" "kube-system"
+wait_for_deployment "kubernetes-dashboard" "ci"
+
+kubectl -n ci describe secrets kubernetes-dashboard-token

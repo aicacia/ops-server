@@ -1,1 +1,2 @@
 export HOST=localhost
+export DOCKER_HT_PASSWD=

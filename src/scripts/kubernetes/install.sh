@@ -31,8 +31,9 @@ sudo sed -i '/--container-runtime/d' $kubelet_args
 sudo sh -c "echo --container-runtime=docker >> $kubelet_args"
 
 microk8s.start
+microk8s.status --wait-ready
 
-microk8s.enable dns ingress storage
+microk8s.enable dns storage
 sudo snap alias microk8s.kubectl kubectl
 
 microk8s.kubectl config view --raw > $HOME/.kube/config
@@ -43,3 +44,8 @@ kubectl create serviceaccount tiller --namespace kube-system
 kubectl create -f $dir/tiller-clusterrolebinding.yaml
 
 helm init --service-account tiller --wait
+
+$dir/../ingress/install.sh
+$dir/../docker/install.sh
+$dir/../dashboard/install.sh
+#dir/../jenkins/install.sh

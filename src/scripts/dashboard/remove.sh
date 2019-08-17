@@ -1,3 +1,3 @@
 #!/bin/bash
 
-helm delete --purge dashboard
+helm delete --purge kubernetes-dashboard
