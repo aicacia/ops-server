@@ -1,2 +1,6 @@
 export HOST=localhost
-export DOCKER_HT_PASSWD=
+
+export ISSUER_NAME=letsencrypt-staging
+export LETS_ENCRYPT_EMAIL=admin@$HOST.com
+
+export DOCKER_HTPASSED=

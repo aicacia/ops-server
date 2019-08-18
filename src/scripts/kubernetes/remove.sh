@@ -3,7 +3,7 @@
 dir=$(readlink -f "$(dirname "$0")")
 
 $dir/../ingress/remove.sh
-$dir/../docker/remove.sh
+$dir/../docker-registry/remove.sh
 $dir/../dashboard/remove.sh
 $dir/../chartmuseum/remove.sh
 #dir/../jenkins/remove.sh

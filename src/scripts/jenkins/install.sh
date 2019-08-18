@@ -12,5 +12,3 @@ helm install stable/jenkins \
   --set master.ingress.hostName=$host
 
 wait_for_deployment "jenkins" "ci"
-
-echo "add $host to /etc/hosts"

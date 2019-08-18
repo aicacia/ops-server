@@ -3,3 +3,6 @@ service:
   nodePort: 31000
 
 enableSkipLogin: false
+
+ingress:
+  tls: []
