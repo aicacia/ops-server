@@ -1,0 +1,7 @@
+ingress:
+  enabled: true
+
+env:
+  open:
+    DISABLE_API: false
+    ALLOW_OVERWRITE: true

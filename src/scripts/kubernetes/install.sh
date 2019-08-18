@@ -50,4 +50,5 @@ helm init --service-account tiller --wait
 $dir/../ingress/install.sh
 $dir/../docker/install.sh
 $dir/../dashboard/install.sh
+$dir/../chartmuseum/install.sh
 #dir/../jenkins/install.sh
