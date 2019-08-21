@@ -1,5 +1,8 @@
 ingress:
   enabled: true
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/secure-backends: "true"
 
 env:
   open:
