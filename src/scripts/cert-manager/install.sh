@@ -10,7 +10,6 @@ helm install jetstack/cert-manager \
   --name cert-manager \
   --namespace ci \
   --values $dir/values.yaml \
-  --set clusterissuerEnabled=true \
   --set ingressShim.defaultIssuerName=$ISSUER_NAME \
   --set letsencrypt.email=$LETS_ENCRYPT_EMAIL
 
