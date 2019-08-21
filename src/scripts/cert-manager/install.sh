@@ -10,6 +10,7 @@ source $dir/../functions.sh
 helm install stable/cert-manager \
   --name cert-manager \
   --namespace ci \
+  --version v0.6.0 \
   --values $dir/values.yaml \
   --set ingressShim.defaultIssuerName=$ISSUER_NAME \
   --set letsencrypt.email=$LETS_ENCRYPT_EMAIL
