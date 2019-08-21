@@ -4,9 +4,10 @@ dir=$(readlink -f "$(dirname "$0")")
 
 source $dir/../functions.sh
 
-helm repo add jetstack https://charts.jetstack.io
+#helm repo add jetstack https://charts.jetstack.io
 
-helm install jetstack/cert-manager \
+#helm install jetstack/cert-manager \
+helm install stable/cert-manager \
   --name cert-manager \
   --namespace ci \
   --values $dir/values.yaml \
