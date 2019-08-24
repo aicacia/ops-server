@@ -4,13 +4,13 @@ dir=$(readlink -f "$(dirname "$0")")
 
 source $dir/../functions.sh
 
-#helm repo add jetstack https://charts.jetstack.io
+kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.6/deploy/manifests/00-crds.yaml
 
-#helm install jetstack/cert-manager \
-helm install stable/cert-manager \
+helm repo add jetstack https://charts.jetstack.io
+
+helm install jetstack/cert-manager \
   --name cert-manager \
   --namespace ci \
-  --version v0.6.0 \
   --values $dir/values.yaml \
   --set ingressShim.defaultIssuerName=$ISSUER_NAME \
   --set letsencrypt.email=$LETS_ENCRYPT_EMAIL

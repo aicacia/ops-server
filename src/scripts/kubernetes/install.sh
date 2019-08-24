@@ -5,8 +5,8 @@ dir=$(readlink -f "$(dirname "$0")")
 
 source $dir/../functions.sh
 
-sudo apt-get update
-sudo apt-get install \
+sudo apt update
+sudo apt install \
   apt-transport-https \
   ca-certificates \
   curl \
@@ -20,35 +20,34 @@ sudo add-apt-repository \
   $(lsb_release -cs) \
   stable"
 
-sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io  -y
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io  -y
 
 sudo usermod -aG docker $USER
 
-sudo snap install microk8s --classic
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+grep -qxF "deb https://apt.kubernetes.io/ kubernetes-xenial main" /etc/apt/sources.list.d/kubernetes.list || echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" >> /etc/apt/sources.list.d/kubernetes.list
+sudo apt update
+sudo apt install -y kubectl
 
-microk8s.stop
+curl -Lo ./kind https://github.com/kubernetes-sigs/kind/releases/download/v0.5.0/kind-$(uname)-amd64
+chmod +x ./kind
+mv ./kind $HOME/kind
 
-sudo sed -i '/--container-runtime/d' $kubelet_args
-sudo sh -c "echo --container-runtime=docker >> $kubelet_args"
+kind create cluster --wait 10m
 
-microk8s.start
-microk8s.status --wait-ready
-
-microk8s.enable dns storage
-sudo snap alias microk8s.kubectl kubectl
-
-microk8s.kubectl config view --raw > $HOME/.kube/config
+mkdir -p $HOME/.kube
+cat $(kind get kubeconfig-path) > $HOME/.kube/config
 
 curl -L https://git.io/get_helm.sh | sudo bash
 
-kubectl create serviceaccount tiller --namespace kube-system
-kubectl create -f $dir/tiller-clusterrolebinding.yaml
+kubectl create -f $dir/rbac-config.yaml
 
-helm init --service-account tiller --wait
+helm init --service-account tiller --history-max 200 --wait
 
 $dir/../ingress/install.sh
+$dir/../cert-manager/install.sh
 $dir/../docker-registry/install.sh
-$dir/../dashboard/install.sh
 $dir/../chartmuseum/install.sh
+$dir/../dashboard/install.sh
 #dir/../jenkins/install.sh
