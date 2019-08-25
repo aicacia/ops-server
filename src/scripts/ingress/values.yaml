@@ -1,2 +1,3 @@
 controller:
   hostNetwork: true
+  ingressClass: nginx
