@@ -33,7 +33,7 @@ export TILLER_NAMESPACE=kube-system
 helm init --service-account tiller --tiller-namespace kube-system
 
 chown $USER.$USER -R $HOME/.helm
-kubectl taint nodes --all node-role.kubernetes.io/master
+kubectl taint nodes --all node-role.kubernetes.io/master-
 
 wait_for_deployment "tiller-deploy" "kube-system"
 
