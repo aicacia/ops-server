@@ -6,6 +6,7 @@ dir=$(readlink -f "$(dirname "$0")")
 echo "Executing Helm installation process."
 
 source $dir/../functions.sh
+source $dir/../../../.envrc
 
 curl -s https://storage.googleapis.com/kubernetes-helm/helm-v${helm_version}-linux-amd64.tar.gz -o helm.tar.gz
 tar xf helm.tar.gz

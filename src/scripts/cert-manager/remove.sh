@@ -2,7 +2,8 @@
 
 dir=$(readlink -f "$(dirname "$0")")
 
-source $dir/../init.sh
+source $dir/../functions.sh
+source $dir/../../../.envrc
 
 helm delete --purge cert-manager
 helm repo remove jetstack
