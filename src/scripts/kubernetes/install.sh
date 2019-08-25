@@ -8,8 +8,8 @@ $dir/install-docker.sh
 $dir/install-kubernetes.sh
 $dir/install-helm.sh
 
-$dir/../ingress/install.sh
 $dir/../cert-manager/install.sh
+$dir/../ingress/install.sh
 $dir/../docker-registry/install.sh
 $dir/../chartmuseum/install.sh
 $dir/../dashboard/install.sh

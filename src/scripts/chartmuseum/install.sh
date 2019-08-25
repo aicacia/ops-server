@@ -10,7 +10,7 @@ helm install stable/chartmuseum \
   --namespace ci \
   --values $dir/values.yaml \
   --set ingress.hosts[0].name=$host \
-  --set ingress.hosts[0].tls=false \
+  --set ingress.hosts[0].tls=true \
   --set ingress.annotations."certmanager\.k8s\.io/cluster-issuer"=$ISSUER_NAME
 
 wait_for_deployment "chartmuseum-chartmuseum" "ci"
