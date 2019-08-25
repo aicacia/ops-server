@@ -4,7 +4,7 @@ dir=$(readlink -f "$(dirname "$0")")
 host=chartmuseum.$HOST
 secret_name=$(echo "$host" | sed -e 's/[_\.]/-/g')-tls
 
-source $dir/../functions.sh
+source $dir/../init.sh
 
 helm install stable/chartmuseum \
   --name chartmuseum \

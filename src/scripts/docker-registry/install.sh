@@ -4,7 +4,7 @@ dir=$(readlink -f "$(dirname "$0")")
 host="registry.$HOST"
 secret_name=$(echo "$host" | sed -e 's/[_\.]/-/g')-tls
 
-source $dir/../functions.sh
+source $dir/../init.sh
 
 helm install stable/docker-registry \
   --name docker-registry \
