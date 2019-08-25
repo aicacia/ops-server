@@ -13,7 +13,7 @@ mv linux-amd64/helm /usr/local/bin/
 rm -rf linux-amd64
 rm helm.tar.gz
 
-kubectl create -f $dir/tiller.yaml
+kubectl apply -f $dir/tiller.yaml
 
 if [[ -e "$HOME/.zprofile" ]]
 then

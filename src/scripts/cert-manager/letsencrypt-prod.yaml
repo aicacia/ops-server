@@ -9,7 +9,4 @@ spec:
     email: ${LETS_ENCRYPT_EMAIL}
     privateKeySecretRef:
       name: letsencrypt-prod
-    solvers:
-      - http01:
-          ingress:
-            class: nginx
+    http01: {}

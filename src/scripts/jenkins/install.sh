@@ -6,7 +6,7 @@ secretName="${host/\./\-}-crt"
 
 source $dir/../functions.sh
 
-kubectl create -f $dir/jenkins-pv-pvc.yaml
+kubectl apply -f $dir/jenkins-pv-pvc.yaml
 
 helm install stable/jenkins \
   --name jenkins \

@@ -14,7 +14,7 @@ echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.
 apt-get update
 apt-get install -y kubelet=${kubeadm_version} kubeadm=${kubeadm_version} kubectl=${kubeadm_version}
 
-apt-mark hold kubelet kubeadm kubect
+apt-mark hold kubelet kubeadm kubectl
 
 if [[ "${node_type}" == "master" ]]
 then
