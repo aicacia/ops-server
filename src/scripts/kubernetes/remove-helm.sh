@@ -7,10 +7,9 @@ $dir/../cert-manager/remove.sh
 $dir/../docker-registry/remove.sh
 $dir/../chartmuseum/remove.sh
 $dir/../dashboard/remove.sh
-$dir/../jenkins/remove.sh
+#dir/../jenkins/remove.sh
 
-$dir/remove-helm.sh
-$dir/remove-kubernetes.sh
-$dir/remove-docker.sh
+kubectl delete -f $dir/tiller.yaml
 
-apt autoremove -y
+rm -rf $HOME/.helm/
+rm /usr/local/bin/helm

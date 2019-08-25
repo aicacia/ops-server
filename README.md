@@ -12,5 +12,9 @@ $ source .envrc
 ## Local
 
 ```bash
-$ ./src/run.sh
+$ ./src/run.sh install
+```
+
+```bash
+$ ./src/run.sh remove
 ```

@@ -6,7 +6,7 @@ source $dir/../functions.sh
 
 helm install stable/nginx-ingress \
   --name nginx-ingress \
-  --namespace ingress \
+  --namespace kube-system \
   --values $dir/values.yaml
 
-wait_for_deployment "nginx-ingress-controller" "ingress"
+wait_for_deployment "nginx-ingress-controller" "kube-system"

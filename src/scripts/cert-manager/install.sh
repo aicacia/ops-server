@@ -10,9 +10,9 @@ helm repo add jetstack https://charts.jetstack.io
 
 helm install jetstack/cert-manager \
   --name cert-manager \
-  --namespace ci \
+  --namespace kube-system \
   --values $dir/values.yaml \
   --set ingressShim.defaultIssuerName=$ISSUER_NAME \
   --set letsencrypt.email=$LETS_ENCRYPT_EMAIL
 
-wait_for_deployment "cert-manager" "ci"
+wait_for_deployment "cert-manager" "kube-system"

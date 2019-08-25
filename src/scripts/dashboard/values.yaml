@@ -1,8 +1,15 @@
 service:
-  type: NodePort
-  nodePort: 31000
-
-enableSkipLogin: false
+  type: ClusterIP
 
 ingress:
-  tls: []
+  enabled: true
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    
+rbac:
+  clusterAdminRole: true
+
+enableInsecureLogin: false
+enableSkipLogin: true
