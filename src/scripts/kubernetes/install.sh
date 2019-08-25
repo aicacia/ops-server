@@ -13,4 +13,4 @@ $dir/../cert-manager/install.sh
 $dir/../docker-registry/install.sh
 $dir/../chartmuseum/install.sh
 $dir/../dashboard/install.sh
-# $dir/../jenkins/install.sh
+$dir/../jenkins/install.sh
