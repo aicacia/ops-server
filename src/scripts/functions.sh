@@ -1,3 +1,12 @@
+function kubectl_with_environment() {
+    command=$1
+    file=$2
+
+    envsubst < ${file} > ${file}.bak
+    kubectl ${command} -f ${file}.bak
+    rm ${file}.bak
+}
+
 function wait_for_deployment() {
     deployment=$1
     namespace=$2
