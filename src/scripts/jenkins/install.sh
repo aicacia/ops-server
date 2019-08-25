@@ -1,11 +1,12 @@
 #!/bin/bash
 
 dir=$(readlink -f "$(dirname "$0")")
-host="jenkins.$HOST"
-secret_name=$(echo "$host" | sed -e 's/[_\.]/-/g')-tls
 
 source $dir/../functions.sh
 source $dir/../../../.envrc
+
+host="jenkins.$HOST"
+secret_name=$(echo "$host" | sed -e 's/[_\.]/-/g')-tls
 
 kubectl apply -f $dir/jenkins-persistent-volume.yaml
 kubectl apply -f $dir/jenkins-persistent-volume-claim.yaml

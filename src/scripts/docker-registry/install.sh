@@ -1,11 +1,12 @@
 #!/bin/bash
 
 dir=$(readlink -f "$(dirname "$0")")
-host="registry.$HOST"
-secret_name=$(echo "$host" | sed -e 's/[_\.]/-/g')-tls
 
 source $dir/../functions.sh
 source $dir/../../../.envrc
+
+host="registry.$HOST"
+secret_name=$(echo "$host" | sed -e 's/[_\.]/-/g')-tls
 
 helm install stable/docker-registry \
   --name docker-registry \

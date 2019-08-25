@@ -1,11 +1,12 @@
 #!/bin/bash
 
 dir=$(readlink -f "$(dirname "$0")")
-host="dashboard.$HOST"
-secret_name=$(echo "$host" | sed -e 's/[_\.]/-/g')-tls
 
 source $dir/../functions.sh
 source $dir/../../../.envrc
+
+host="dashboard.$HOST"
+secret_name=$(echo "$host" | sed -e 's/[_\.]/-/g')-tls
 
 helm install stable/kubernetes-dashboard \
   --name kubernetes-dashboard \
