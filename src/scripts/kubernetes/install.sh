@@ -12,5 +12,5 @@ $dir/../cert-manager/install.sh
 $dir/../ingress/install.sh
 $dir/../docker-registry/install.sh
 $dir/../chartmuseum/install.sh
-$dir/../dashboard/install.sh
+$dir/../kubernetes-dashboard/install.sh
 $dir/../jenkins/install.sh
