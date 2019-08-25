@@ -1,8 +1,10 @@
 master:
-  jenkinsUriPrefix: /
   ingress:
     enabled: true
     path: /
     annotations:
       kubernetes.io/tls-acme: "true"
       nginx.ingress.kubernetes.io/secure-backends: "true"
+
+persistence:
+  existingClaim: jenkins-persistent-volume-claim

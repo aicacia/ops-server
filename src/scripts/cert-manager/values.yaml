@@ -1,1 +1,2 @@
-clusterissuerEnabled: true
+ingressShim:
+  defaultIssuerKind: ClusterIssuer
