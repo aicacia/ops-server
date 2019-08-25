@@ -2,7 +2,7 @@
 
 dir=$(readlink -f "$(dirname "$0")")
 host=chartmuseum.$HOST
-secret_name="${host/\./\-}-crt"
+secret_name=$(echo "$host" | sed -e 's/[_\.]/-/g')-tls
 
 source $dir/../functions.sh
 

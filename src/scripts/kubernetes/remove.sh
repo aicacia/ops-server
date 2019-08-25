@@ -9,8 +9,8 @@ $dir/../docker-registry/remove.sh
 $dir/../ingress/remove.sh
 $dir/../cert-manager/remove.sh
 
-$dir/remove-helm.sh
-$dir/remove-kubernetes.sh
-$dir/remove-docker.sh
+# $dir/remove-helm.sh
+# $dir/remove-kubernetes.sh
+# $dir/remove-docker.sh
 
 apt autoremove -y
