@@ -2,8 +2,7 @@
 
 dir=$(readlink -f "$(dirname "$0")")
 
-source $dir/../functions.sh
-source $dir/../../../.envrc
+source $dir/../../functions.sh
 
 kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.9/deploy/manifests/00-crds.yaml
 

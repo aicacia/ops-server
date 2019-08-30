@@ -1,12 +1,12 @@
 #!/bin/bash
 
+dir=$(readlink -f "$(dirname "$0")")
+
+source $dir/../../functions.sh
+
 kubeadm_version="1.12.10-00"
 kubernetes_images_version="v1.12.10"
 calico_version="v3.7"
-node_type="master"
-cluster_name="${node_type}"
-
-echo "Executing Kubernetes installation process."
 
 apt-get install -y apt-transport-https
 curl https://packages.cloud.google.com/apt/doc/apt-key.gpg -s | apt-key add -
@@ -43,7 +43,5 @@ then
 
     chown $USER.$USER -R $HOME/.kube
 else
-    kubeadm join --token "${discovery_token}" --discovery-token-ca-cert-hash "sha256:${discovery_token_hash}" ${apiserver_address} 
+    kubeadm join --token "${discovery_token}" --discovery-token-ca-cert-hash "sha256:${discovery_token_hash}" ${api_server_address} 
 fi
-
-echo "Kubernetes installation process complete."

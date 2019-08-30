@@ -2,8 +2,6 @@
 
 docker_version="18.06.3"
 
-echo "Executing Docker installation process."
-
 apt update
 apt install -y \
     apt-transport-https \
@@ -28,5 +26,3 @@ apt install -y \
 apt-mark hold docker-ce
 
 usermod -aG docker ${USER}
-
-echo "Docker installation process complete."

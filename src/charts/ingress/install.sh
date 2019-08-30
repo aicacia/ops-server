@@ -2,8 +2,7 @@
 
 dir=$(readlink -f "$(dirname "$0")")
 
-source $dir/../functions.sh
-source $dir/../../../.envrc
+source $dir/../../functions.sh
 
 helm install stable/nginx-ingress \
   --name nginx-ingress \
