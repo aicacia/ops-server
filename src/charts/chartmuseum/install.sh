@@ -31,13 +31,13 @@ else
   --set env.secret.BASIC_AUTH_USER=$CHART_USER \
   --set env.secret.BASIC_AUTH_PASS=$CHART_PASS \
   --set ingress.hosts[0].name=$host
-
-  add_to_readme "localhost:31000"
 fi
 
 wait_for_deployment "chartmuseum-chartmuseum" "ci"
 
 add_to_readme "host: ${host}"
+add_to_readme "user: ${CHART_USER}"
+add_to_readme "passwird: ${CHART_PASS}"
 
 helm plugin install https://github.com/chartmuseum/helm-push
 helm repo add chartmuseum http://$host
