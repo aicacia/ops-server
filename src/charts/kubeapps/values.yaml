@@ -1,0 +1,12 @@
+apprepository:
+  initialRepos:
+  - name: stable
+    url: https://kubernetes-charts.storage.googleapis.com
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
+  - name: jetstack 
+    url: https://charts.jetstack.io
+  - name: chartmuseum
+
+ingress:
+  enabled: true

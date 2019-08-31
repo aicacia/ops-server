@@ -1,5 +1,7 @@
 #!/bin/bash
 
+user_name=$1
+
 docker_version="18.06.3"
 
 apt update
@@ -25,4 +27,4 @@ apt install -y \
 
 apt-mark hold docker-ce
 
-usermod -aG docker ${USER}
+usermod -aG docker ${user_name}

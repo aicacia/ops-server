@@ -1,16 +1,22 @@
 #!/bin/bash
 
 dir=$(readlink -f "$(dirname "$0")")
+cluster_name=$1
 
 source $dir/../functions.sh
 
-if [[ "${node_type}" == "cluster" ]];
+if [[ "${cluster_type}" == "cluster" ]];
 then
-  $dir/cert-manager/install.sh
+  $dir/cert-manager/install.sh ${cluster_name}
 fi
 
-$dir/ingress/install.sh
-$dir/docker-registry/install.sh
-$dir/chartmuseum/install.sh
-$dir/kubernetes-dashboard/install.sh
-$dir/jenkins/install.sh
+$dir/ingress/install.sh ${cluster_name}
+$dir/docker-registry/install.sh ${cluster_name}
+$dir/chartmuseum/install.sh ${cluster_name}
+$dir/kubernetes-dashboard/install.sh ${cluster_name}
+
+if [[ "${cluster_type}" == "cluster" ]];
+then
+  $dir/jenkins/install.sh ${cluster_name}
+  $dir/kubeapps/install.sh ${cluster_name}
+fi

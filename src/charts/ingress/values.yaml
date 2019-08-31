@@ -1,4 +1,20 @@
 controller:
-  hostNetwork: "true"
   ingressClass: nginx
-  
+
+  resources: 
+    limits:
+      cpu: 2
+      memory: 1024Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 75
+    targetMemoryUtilizationPercentage: 80
+
+  metrics:
+    enabled: true

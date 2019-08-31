@@ -1,8 +1,11 @@
 #!/bin/bash
 
-dir=$(readlink -f "$(dirname "$0")")
-
-source $dir/../../functions.sh
+node_type=$1
+cluster_name=$2
+user_name=$3
+discovery_token=$4
+discovery_token_hash=$5
+api_server_address=$6
 
 kubeadm_version="1.12.10-00"
 kubernetes_images_version="v1.12.10"
@@ -16,7 +19,7 @@ apt-get install -y kubelet=${kubeadm_version} kubeadm=${kubeadm_version} kubectl
 
 apt-mark hold kubelet kubeadm kubectl
 
-if [[ "${node_type}" == "master" ]]
+if [[ "${node_type}" == "master" ]];
 then
     kubeadm init --kubernetes-version=${kubernetes_images_version} --token-ttl 0
 
@@ -36,12 +39,14 @@ then
     cat /etc/kubernetes/admin.conf > $HOME/.kube/config
 
     node_name=$(hostname)
+
     kubectl label nodes ${node_name} kubernetes.io/cluster-name=${cluster_name}
     kubectl label nodes ${node_name} kubeadm.alpha.kubernetes.io/role=master
 
     kubectl apply -f https://docs.projectcalico.org/${calico_version}/manifests/calico.yaml
 
-    chown $USER.$USER -R $HOME/.kube
-else
-    kubeadm join --token "${discovery_token}" --discovery-token-ca-cert-hash "sha256:${discovery_token_hash}" ${api_server_address} 
+    chown $user_name.$user_name -R $HOME/.kube
+elif [[ "${node_type}" == "slave" ]];
+then
+    kubeadm join --token "${discovery_token}" --discovery-token-ca-cert-hash "sha256:${discovery_token_hash}" ${api_server_address}
 fi

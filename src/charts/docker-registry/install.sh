@@ -1,6 +1,7 @@
 #!/bin/bash
 
 dir=$(readlink -f "$(dirname "$0")")
+cluster_name=$1
 
 source $dir/../../functions.sh
 
@@ -20,6 +21,8 @@ then
   --set ingress.tls[0].hosts[0]=$host \
   --set ingress.tls[0].secretName=$secret_name \
   --set secrets.htpasswd=$DOCKER_HTPASSWD
+
+  docker_url="https://${host}"
 else
   helm install stable/docker-registry \
     --name docker-registry \
@@ -27,10 +30,14 @@ else
     --values $dir/values.yaml \
     --set ingress.hosts[0]=$host \
     --set secrets.htpasswd=$DOCKER_HTPASSWD
+
+  docker_url="http://${host}"
 fi
 
-wait_for_deployment "docker-registry" "ci"
+add_variable "docker_url" ${docker_url}
 
-add_to_readme "host: ${host}"
+add_to_readme "url: ${docker_url}"
+
+wait_for_deployment "docker-registry" "ci"
 
 end_readme_section "docker-registry"
