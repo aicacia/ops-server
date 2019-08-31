@@ -28,6 +28,10 @@ if [[ -e "$HOME/.profile" ]];
 then
     add_environment_variable "TILLER_NAMESPACE" ${tiller_namespace} "$HOME/.profile"
 fi
+if [[ -e "$HOME/.bashrc" ]];
+then
+    add_environment_variable "TILLER_NAMESPACE" ${tiller_namespace} "$HOME/.bashrc"
+fi
 
 if [[ "${node_type}" == "master" ]];
 then

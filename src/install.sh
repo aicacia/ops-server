@@ -49,7 +49,7 @@ then
 
   add_variable "api_server_host" ${master_node}
   add_variable "api_server_address" ${master_node}:6443
-  add_environment_variable "API_SERVER_HOST" ${master_node}
+  add_environment_variable "API_SERVER_HOST" ${master_node} ${envrc_file}
 
   scp -q -r $dir ${ssh_user_name}@${master_node}:build
   ssh ${ssh_user_name}@${master_node} "./build/cluster/install.sh master ${cluster_name} ${tiller_namespace} ${ssh_user_name}"
@@ -100,7 +100,7 @@ else
 
   add_variable "api_server_host" ${master_node}
   add_variable "api_server_address" ${master_node}:6443
-  add_environment_variable "API_SERVER_HOST" ${master_node}
+  add_environment_variable "API_SERVER_HOST" ${master_node} ${envrc_file}
 
   $dir/charts/install.sh ${cluster_name}
 fi
