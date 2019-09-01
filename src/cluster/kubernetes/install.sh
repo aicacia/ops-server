@@ -1,11 +1,14 @@
 #!/bin/bash
 
+dir=$(readlink -f "$(dirname "$0")")
+
 node_type=$1
 cluster_name=$2
 user_name=$3
-discovery_token=$4
-discovery_token_hash=$5
-api_server_address=$6
+home_dir=$4
+discovery_token=$5
+discovery_token_hash=$6
+api_server_address=$7
 
 kubeadm_version="1.15.3-00"
 kubernetes_images_version="v1.15.3"
@@ -35,8 +38,8 @@ then
         sleep 2
     done
 
-    mkdir -p $HOME/.kube
-    cat /etc/kubernetes/admin.conf > $HOME/.kube/config
+    mkdir -p $home_dir/.kube
+    cat /etc/kubernetes/admin.conf > $home_dir/.kube/config
 
     node_name=$(hostname)
 
@@ -45,7 +48,7 @@ then
 
     kubectl apply -f https://docs.projectcalico.org/${calico_version}/manifests/calico.yaml
 
-    chown $user_name.$user_name -R $HOME/.kube
+    chown $user_name.$user_name -R $home_dir/.kube
 elif [[ "${node_type}" == "slave" ]];
 then
     kubeadm join --token "${discovery_token}" --discovery-token-ca-cert-hash "sha256:${discovery_token_hash}" ${api_server_address}

@@ -25,14 +25,14 @@ then
   echo "  2 - Remove"
   read user_input
   user_input=${user_input:-1}
-  update_type=install
+  update_type="install"
 
   if [[ "${user_input}" == "1" ]];
   then
-    update_type=install
+    update_type="install"
   elif [[ "${user_input}" == "2" ]];
   then
-    update_type=remove
+    update_type="remove"
   else
     echo "Invalid input ${user_input}"
     exit 1
@@ -42,17 +42,17 @@ then
   set -f
   for node in $(cat < $(nodes_file "updated_slave"))
   do
+    ssh_user_home_dir=$(ssh ${ssh_user_name}@${node} 'echo $HOME')
+    
     if [[ "${update_type}" == "install" ]]; 
     then
       begin_readme_section "Slave Node ${node}"
+
       scp -q -r $dir ${ssh_user_name}@${node}:build
-    fi
 
-    ssh ${ssh_user_name}@${node} "build/cluster/${update_type}.sh \
-      slave ${cluster_name} ${tiller_namespace} ${ssh_user_name} ${discovery_token} ${discovery_token_hash} ${api_server_address}"
+      ssh ${ssh_user_name}@${node} "build/cluster/install.sh \
+        slave ${cluster_name} ${ssh_user_name} ${ssh_user_home_dir} ${tiller_namespace} ${discovery_token} ${discovery_token_hash} ${api_server_address}"
 
-    if [[ "${update_type}" == "install" ]]; 
-    then
       node_name=$(ssh ${ssh_user_name}@${node} hostname)
       kubectl label nodes ${node_name} kubernetes.io/cluster-name=${cluster_name}
       kubectl label nodes ${node_name} kubeadm.alpha.kubernetes.io/role=node
@@ -63,7 +63,9 @@ then
 
       end_readme_section "Slave Node ${node}"
     else
+      ssh ${ssh_user_name}@${node} "build/cluster/remove.sh ${ssh_user_home_dir}"
       ssh ${ssh_user_name}@${node} "rm -rf build"
+
       node_name=$(ssh ${ssh_user_name}@${node} hostname)
       kubectl delete node ${node_name}
 

@@ -51,8 +51,10 @@ then
   add_variable "api_server_address" ${master_node}:6443
   add_environment_variable "API_SERVER_HOST" ${master_node} $(envrc_file)
 
+  ssh_user_home_dir=$(ssh ${ssh_user_name}@${master_node} 'echo $HOME')
+
   scp -q -r $dir ${ssh_user_name}@${master_node}:build
-  ssh ${ssh_user_name}@${master_node} "./build/cluster/install.sh master ${cluster_name} ${tiller_namespace} ${ssh_user_name}"
+  ssh ${ssh_user_name}@${master_node} "./build/cluster/install.sh master ${cluster_name} ${ssh_user_name} ${ssh_user_home_dir} ${tiller_namespace}"
   
   discovery_token=$(ssh ${ssh_user_name}@${master_node} "kubeadm token list | grep \"kubeadm init\" | cut -d' ' -f 1")
   add_variable "discovery_token" ${discovery_token}
@@ -64,6 +66,8 @@ then
   add_environment_variable "KUBECONFIG" $(cluster_home)/${cluster_name} $(envrc_file)
   export KUBECONFIG=$(cluster_home)/${cluster_name}
 
+  master_node_name=$(ssh ${ssh_user_name}@${master_node} hostname)
+  add_to_readme "master_node_name: ${master_node_name}"
   add_to_readme "api_server_address: ${api_server_address}"
   add_to_readme "discovery_token: ${discovery_token}"
   add_to_readme "discovery_token_hash: ${discovery_token_hash}"
@@ -78,9 +82,11 @@ then
   do
     begin_readme_section "Slave Node ${node}"
 
+    ssh_user_home_dir=$(ssh ${ssh_user_name}@${node} 'echo $HOME')
+
     scp -q -r $dir ${ssh_user_name}@${node}:build
     ssh ${ssh_user_name}@${node} "build/cluster/install.sh \
-      slave ${cluster_name} ${tiller_namespace} ${ssh_user_name} ${discovery_token} ${discovery_token_hash} ${api_server_address}"
+      slave ${cluster_name} ${ssh_user_name} ${ssh_user_home_dir} ${tiller_namespace} ${discovery_token} ${discovery_token_hash} ${api_server_address}"
 
     node_name=$(ssh ${ssh_user_name}@${node} hostname)
     kubectl label nodes ${node_name} kubernetes.io/cluster-name=${cluster_name}
@@ -91,10 +97,13 @@ then
     end_readme_section "Slave Node ${node}"
   done
 
-  sudo $dir/cluster/install.sh no_cluster ${cluster_name} ${tiller_namespace} ${user_name}
+  if [! type "kubectl" > /dev/null ] || [! type "helm" > /dev/null ]; 
+  then
+    sudo $dir/cluster/install.sh no_cluster ${cluster_name} ${user_name} ${home_dir} ${tiller_namespace}
+  fi
   $dir/charts/install.sh ${cluster_name}
 else
-  sudo $dir/cluster/install.sh master ${cluster_name} ${tiller_namespace} ${user_name}
+  sudo $dir/cluster/install.sh master ${cluster_name} ${user_name} ${home_dir} ${tiller_namespace}
 
   master_node=$(kubectl get nodes --selector=kubernetes.io/role!=master -o jsonpath={.items[*].status.addresses[?\(@.type==\"InternalIP\"\)].address})
 

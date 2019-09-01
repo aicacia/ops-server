@@ -2,7 +2,9 @@
 
 dir=$(readlink -f "$(dirname "$0")")
 
-$dir/helm/remove.sh
+home_dir=$1
+
+$dir/helm/remove.sh ${home_dir}
 $dir/kubernetes/remove.sh
 $dir/docker/remove.sh
 

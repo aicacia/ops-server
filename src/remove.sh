@@ -12,7 +12,7 @@ remove_init_callback
 cp $dir/../.envrc $(envrc_file)
 source $(envrc_file)
 
-$dir/charts/remove.sh
+$dir/charts/remove.sh ${cluster_name}
 
 if [[ "${cluster_type}" == "cluster" ]];
 then
@@ -22,15 +22,17 @@ then
   set -f
   for node in $(cat < $(nodes_file "slave"))
   do
-    ssh ${ssh_user_name}@${node} "build/cluster/remove.sh"
+    ssh_user_home_dir=$(ssh ${ssh_user_name}@${master_node} 'echo $HOME')
+    ssh ${ssh_user_name}@${node} "build/cluster/remove.sh ${ssh_user_home_dir}"
     ssh ${ssh_user_name}@${node} "rm -rf build"
   done
 
-  node=$(head -n 1 $(nodes_file "master"))
-  ssh ${ssh_user_name}@${node} "build/cluster/remove.sh"
-  ssh ${ssh_user_name}@${node} "rm -rf build"
+  master_node=$(head -n 1 $(nodes_file "master"))
+  ssh_user_home_dir=$(ssh ${ssh_user_name}@${master_node} 'echo $HOME')
+  ssh ${ssh_user_name}@${master_node} "build/cluster/remove.sh ${ssh_user_home_dir}"
+  ssh ${ssh_user_name}@${master_node} "rm -rf build"
 else
-  sudo $dir/cluster/remove.sh
+  sudo $dir/cluster/remove.sh ${home_dir}
 fi
 
 remove_end_callback
