@@ -2,6 +2,7 @@
 
 dir=$(readlink -f "$(dirname "$0")")
 cluster_name=$1
+namespace=kube-public
 
 source $dir/../../functions.sh
 
@@ -22,7 +23,7 @@ if [[ "${cluster_type}" == "cluster" ]];
 then
   helm install bitnami/kubeapps \
     --name kubeapps \
-    --namespace ci \
+    --namespace ${namespace} \
     --set ingress.hosts[0].name=${host} \
     --set ingress.annotations."certmanager\.k8s\.io/cluster-issuer"=$ISSUER_NAME \
     --set ingress.tls[0].hosts[0]=$host \
@@ -35,7 +36,7 @@ then
 else
   helm install bitnami/kubeapps \
     --name kubeapps \
-    --namespace ci \
+    --namespace ${namespace} \
     --set ingress.hosts[0].name=${host} \
     --set tillerProxy.host=tiller-deploy.${tiller_namespace}:44134 \
     --set apprepository.initialRepos[3].url=${chartmuseum_url} \
@@ -49,6 +50,6 @@ add_variable "kubeapps_url" ${kubeapps_url}
 add_to_readme "url: ${kubeapps_url}"
 add_to_readme "secret token: ${secret_token}"
 
-wait_for_deployment "kubeapps" "ci"
+wait_for_deployment "kubeapps" ${namespace}
 
 end_readme_section "kubeapps"

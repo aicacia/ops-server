@@ -5,8 +5,7 @@ cluster_name=$1
 
 source $dir/../../functions.sh
 
+helm delete --purge metallb
 kubectl_with_environment delete $dir/metallb.yaml
-kubectl delete -f https://raw.githubusercontent.com/google/metallb/v0.8.1/manifests/metallb.yaml
-kubectl delete namespace metallb-system
 
 helm delete --purge nginx-ingress

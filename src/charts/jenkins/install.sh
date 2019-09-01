@@ -2,6 +2,7 @@
 
 dir=$(readlink -f "$(dirname "$0")")
 cluster_name=$1
+namespace=ci
 
 source $dir/../../functions.sh
 
@@ -17,7 +18,7 @@ if [[ "${cluster_type}" == "cluster" ]];
 then
   helm install stable/jenkins \
   --name jenkins \
-  --namespace ci \
+  --namespace ${namespace} \
   --values $dir/values.yaml \
   --set master.ingress.hostName=$host \
   --set master.ingress.annotations."certmanager\.k8s\.io/cluster-issuer"=$ISSUER_NAME \
@@ -28,7 +29,7 @@ then
 else
   helm install stable/jenkins \
   --name jenkins \
-  --namespace ci \
+  --namespace ${namespace} \
   --values $dir/values.yaml \
   --set master.ingress.hostName=$host
 
@@ -39,8 +40,8 @@ add_variable "jenkins_url" ${jenkins_url}
 
 add_to_readme "url: ${jenkins_url}"
 add_to_readme "user: admin"
-add_to_readme "password: $(kubectl get secret --namespace ci jenkins -o jsonpath="{.data.jenkins-admin-password}" | base64 --decode)"
+add_to_readme "password: $(kubectl get secret --namespace ${namespace} jenkins -o jsonpath="{.data.jenkins-admin-password}" | base64 --decode)"
 
-wait_for_deployment "jenkins" "ci"
+wait_for_deployment "jenkins" ${namespace}
 
 end_readme_section "jenkins"

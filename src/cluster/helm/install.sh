@@ -8,7 +8,7 @@ user_name=$3
 
 source $dir/../../functions.sh
 
-helm_version=2.14.1
+helm_version=2.14.3
 
 curl -s https://storage.googleapis.com/kubernetes-helm/helm-v${helm_version}-linux-amd64.tar.gz -o helm.tar.gz
 tar xf helm.tar.gz

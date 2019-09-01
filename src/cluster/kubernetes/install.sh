@@ -7,15 +7,15 @@ discovery_token=$4
 discovery_token_hash=$5
 api_server_address=$6
 
-kubeadm_version="1.12.10-00"
-kubernetes_images_version="v1.12.10"
-calico_version="v3.7"
+kubeadm_version="1.15.3-00"
+kubernetes_images_version="v1.15.3"
+calico_version="v3.8"
 
-apt-get install -y apt-transport-https
+apt install -y apt-transport-https
 curl https://packages.cloud.google.com/apt/doc/apt-key.gpg -s | apt-key add -
 echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
-apt-get update
-apt-get install -y kubelet=${kubeadm_version} kubeadm=${kubeadm_version} kubectl=${kubeadm_version}
+apt update
+apt install -y kubelet=${kubeadm_version} kubeadm=${kubeadm_version} kubectl=${kubeadm_version}
 
 apt-mark hold kubelet kubeadm kubectl
 

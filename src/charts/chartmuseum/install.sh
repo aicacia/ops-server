@@ -2,6 +2,7 @@
 
 dir=$(readlink -f "$(dirname "$0")")
 cluster_name=$1
+namespace=ci
 
 source $dir/../../functions.sh
 
@@ -14,7 +15,7 @@ if [[ "${cluster_type}" == "cluster" ]];
 then
   helm install stable/chartmuseum \
   --name chartmuseum \
-  --namespace ci \
+  --namespace ${namespace} \
   --values $dir/values.yaml \
   --set env.secret.BASIC_AUTH_USER=$CHART_MUSEUM_USER \
   --set env.secret.BASIC_AUTH_PASS=$CHART_MUSEUM_PASS \
@@ -27,7 +28,7 @@ then
 else
   helm install stable/chartmuseum \
   --name chartmuseum \
-  --namespace ci \
+  --namespace ${namespace} \
   --values $dir/values.yaml \
   --set env.secret.BASIC_AUTH_USER=$CHART_MUSEUM_USER \
   --set env.secret.BASIC_AUTH_PASS=$CHART_MUSEUM_PASS \
@@ -42,7 +43,7 @@ add_to_readme "url: ${chartmuseum_url}"
 add_to_readme "user: ${CHART_MUSEUM_USER}"
 add_to_readme "passwird: ${CHART_MUSEUM_PASS}"
 
-wait_for_deployment "chartmuseum-chartmuseum" "ci"
+wait_for_deployment "chartmuseum-chartmuseum" ${namespace}
 
 helm plugin install https://github.com/chartmuseum/helm-push
 helm repo add chartmuseum ${chartmuseum_url}

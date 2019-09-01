@@ -2,6 +2,7 @@
 
 dir=$(readlink -f "$(dirname "$0")")
 cluster_name=$1
+namespace=kube-public
 
 source $dir/../../functions.sh
 
@@ -14,7 +15,7 @@ if [[ "${cluster_type}" == "cluster" ]];
 then
   helm install stable/kubernetes-dashboard \
   --name kubernetes-dashboard \
-  --namespace kube-system \
+  --namespace ${namespace} \
   --values $dir/values.yaml \
   --set ingress.hosts[0]=$host \
   --set ingress.annotations."certmanager\.k8s\.io/cluster-issuer"=$ISSUER_NAME \
@@ -25,7 +26,7 @@ then
 else
   helm install stable/kubernetes-dashboard \
   --name kubernetes-dashboard \
-  --namespace kube-system \
+  --namespace ${namespace} \
   --values $dir/values.yaml \
   --set ingress.hosts[0]=$host \
   --set service.type=NodePort \
@@ -38,7 +39,7 @@ fi
 add_to_readme "url: ${dashboard_url}"
 add_to_readme " "
 
-wait_for_deployment "kubernetes-dashboard" "kube-system"
+wait_for_deployment "kubernetes-dashboard" ${namespace}
 
 kubectl -n kube-system describe secrets kubernetes-dashboard-token |
   while IFS= read -r line

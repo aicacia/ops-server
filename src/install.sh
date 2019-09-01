@@ -100,7 +100,7 @@ else
 
   add_variable "api_server_host" ${master_node}
   add_variable "api_server_address" ${master_node}:6443
-  add_environment_variable "API_SERVER_HOST" ${master_node} ${envrc_file}
+  add_environment_variable "API_SERVER_HOST" ${master_node} $(envrc_file)
 
   $dir/charts/install.sh ${cluster_name}
 fi

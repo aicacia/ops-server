@@ -1,11 +1,5 @@
 controller:
   ingressClass: nginx
-  
-  defaultBackendService: true
-
-  service:
-    type: NodePort
-    externalTrafficPolicy: Local
 
   resources: 
     limits:
@@ -24,6 +18,8 @@ controller:
 
   metrics:
     enabled: true
+
+  defaultBackendService: true
 
 defaultBackend:
   enabled: true
