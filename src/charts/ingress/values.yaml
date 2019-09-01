@@ -1,9 +1,15 @@
 controller:
   ingressClass: nginx
+  
+  defaultBackendService: true
+
+  service:
+    type: NodePort
+    externalTrafficPolicy: Local
 
   resources: 
     limits:
-      cpu: 2
+      cpu: 1
       memory: 1024Mi
     requests:
       cpu: 100m
@@ -18,3 +24,9 @@ controller:
 
   metrics:
     enabled: true
+
+defaultBackend:
+  enabled: true
+
+rbac:
+  create: true

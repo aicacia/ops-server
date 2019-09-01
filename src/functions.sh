@@ -43,6 +43,13 @@ function install_end_callback() {
     end_callback
 }
 
+function update_init_callback() {
+    init_callback
+}
+function update_end_callback() {
+    end_callback
+}
+
 function remove_init_callback() {
     init_callback
 }
