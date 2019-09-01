@@ -32,7 +32,7 @@ else
   --set service.type=NodePort \
   --set service.nodePort=31000
 
-  node_port=$(kubectl get -n kube-system -o jsonpath="{.spec.ports[0].nodePort}" services kubernetes-dashboard)
+  node_port=$(kubectl get -n ${namespace} -o jsonpath="{.spec.ports[0].nodePort}" services kubernetes-dashboard)
   dashboard_url=https://localhost:$node_port
 fi
 
@@ -41,7 +41,7 @@ add_to_readme " "
 
 wait_for_deployment "kubernetes-dashboard" ${namespace}
 
-kubectl -n kube-system describe secrets kubernetes-dashboard-token |
+kubectl -n ${namespace} describe secrets kubernetes-dashboard-token |
   while IFS= read -r line
   do
     add_to_readme "${line}"

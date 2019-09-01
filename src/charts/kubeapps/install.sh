@@ -24,23 +24,28 @@ then
   helm install bitnami/kubeapps \
     --name kubeapps \
     --namespace ${namespace} \
-    --set ingress.hosts[0].name=${host} \
+    --values $dir/values.yaml \
     --set ingress.annotations."certmanager\.k8s\.io/cluster-issuer"=$ISSUER_NAME \
-    --set ingress.tls[0].hosts[0]=$host \
-    --set ingress.tls[0].secretName=$secret_name \
+    --set ingress.certManager=true \
+    --set ingress.hosts[0].name=${host} \
+    --set ingress.hosts[0].tls=true \
+    --set ingress.hosts[0].tlsSecret=$secret_name \
     --set tillerProxy.host=tiller-deploy.${tiller_namespace}:44134 \
     --set apprepository.initialRepos[3].url=${chartmuseum_url} \
-    --values $dir/values.yaml
+    --set apprepository.initialRepos[3].username=${chartmuseum_user} \
+    --set apprepository.initialRepos[3].password=${chartmuseum_password}
 
   kubeapps_url="https://${host}"  
 else
   helm install bitnami/kubeapps \
     --name kubeapps \
     --namespace ${namespace} \
+    --values $dir/values.yaml \
     --set ingress.hosts[0].name=${host} \
     --set tillerProxy.host=tiller-deploy.${tiller_namespace}:44134 \
     --set apprepository.initialRepos[3].url=${chartmuseum_url} \
-    --values $dir/values.yaml
+    --set apprepository.initialRepos[3].username=${chartmuseum_user} \
+    --set apprepository.initialRepos[3].password=${chartmuseum_password}
 
   kubeapps_url="https://${host}"  
 fi

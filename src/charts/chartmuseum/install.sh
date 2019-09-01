@@ -38,15 +38,17 @@ else
 fi
 
 add_variable "chartmuseum_url" ${chartmuseum_url}
+add_variable "chartmuseum_user" ${CHART_MUSEUM_USER}
+add_variable "chartmuseum_password" ${CHART_MUSEUM_PASS}
 
 add_to_readme "url: ${chartmuseum_url}"
 add_to_readme "user: ${CHART_MUSEUM_USER}"
-add_to_readme "passwird: ${CHART_MUSEUM_PASS}"
+add_to_readme "password: ${CHART_MUSEUM_PASS}"
 
 wait_for_deployment "chartmuseum-chartmuseum" ${namespace}
 
 helm plugin install https://github.com/chartmuseum/helm-push
-helm repo add chartmuseum ${chartmuseum_url}
+helm repo add chartmuseum ${chartmuseum_url} --username="${CHART_MUSEUM_USER}" --password="${CHART_MUSEUM_PASS}"
 helm push --help
 
 end_readme_section "chartmuseum"
