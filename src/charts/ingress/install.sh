@@ -3,14 +3,15 @@
 dir=$(readlink -f "$(dirname "$0")")
 cluster_name=$1
 namespace=kube-public
+metallb_namespace=metallb-system
 
 source $dir/../../functions.sh
 
-kubectl_with_environment apply $dir/metallb.yaml
-
 helm install stable/metallb \
   --name metallb \
-  --namespace ${namespace}
+  --namespace ${metallb_namespace} \
+  --values $dir/metallb.yaml \
+  --set configInline.address-pools[0].addresses[0]=${API_SERVER_HOST}
 
 if [[ "${cluster_type}" == "cluster" ]];
 then
@@ -32,4 +33,4 @@ else
     --set controller.autoscaling.enabled=false
 fi
 
-wait_for_deployment "nginx-ingress-default-backend" "kube-system"
+wait_for_deployment "nginx-ingress-default-backend" ${namespace}
