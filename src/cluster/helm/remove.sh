@@ -3,7 +3,10 @@
 dir=$(readlink -f "$(dirname "$0")")
 
 home_dir=$1
+delete_libs=$2
 
-kubectl delete -f $dir/tiller.yaml
-rm -rf $home_dir/.helm/
-rm /usr/local/bin/helm
+helm reset --force
+
+if [[ "${delete_libs}" == "y" ]]; then
+  rm /usr/local/bin/helm
+fi

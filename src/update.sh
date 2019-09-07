@@ -63,7 +63,7 @@ then
 
       end_readme_section "Slave Node ${node}"
     else
-      ssh ${ssh_user_name}@${node} "build/cluster/remove.sh ${ssh_user_home_dir}"
+      ssh ${ssh_user_name}@${node} "build/cluster/remove.sh ${ssh_user_home_dir} y"
       ssh ${ssh_user_name}@${node} "rm -rf build"
 
       node_name=$(ssh ${ssh_user_name}@${node} hostname)
