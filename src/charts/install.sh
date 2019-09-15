@@ -10,6 +10,7 @@ then
   $dir/cert-manager/install.sh ${cluster_name}
 fi
 
+$dir/metric-server/install.sh ${cluster_name}
 $dir/ingress/install.sh ${cluster_name}
 $dir/docker-registry/install.sh ${cluster_name}
 $dir/chartmuseum/install.sh ${cluster_name}

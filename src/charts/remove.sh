@@ -15,6 +15,7 @@ $dir/kubernetes-dashboard/remove.sh ${cluster_name}
 $dir/chartmuseum/remove.sh ${cluster_name}
 $dir/docker-registry/remove.sh ${cluster_name}
 $dir/ingress/remove.sh ${cluster_name}
+$dir/metric-server/remove.sh ${cluster_name}
 
 if [[ "${cluster_type}" == "cluster" ]];
 then
