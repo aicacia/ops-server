@@ -4,6 +4,8 @@ user_name=$1
 
 docker_version="18.06.3"
 
+export DEBIAN_FRONTEND=noninteractive
+
 apt update
 apt install -y \
     apt-transport-https \
