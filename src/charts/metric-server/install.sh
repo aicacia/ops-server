@@ -7,6 +7,7 @@ namespace=kube-system
 source $dir/../../functions.sh
 
 helm install stable/metrics-server \
+  --version 2.8.8 \
   --name metrics-server \
   --namespace ${namespace} \
   --values $dir/values.yaml

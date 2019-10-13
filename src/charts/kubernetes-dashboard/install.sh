@@ -14,6 +14,7 @@ secret_name=$(echo "$host" | sed -e 's/[_\.]/-/g')-tls
 if [[ "${cluster_type}" == "cluster" ]];
 then
   helm install stable/kubernetes-dashboard \
+  --version 1.10.0 \
   --name kubernetes-dashboard \
   --namespace ${namespace} \
   --values $dir/values.yaml \
@@ -25,6 +26,7 @@ then
   dashboard_url="https://${host}"
 else
   helm install stable/kubernetes-dashboard \
+  --version 1.10.0 \
   --name kubernetes-dashboard \
   --namespace ${namespace} \
   --values $dir/values.yaml \

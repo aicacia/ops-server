@@ -17,6 +17,7 @@ kubectl apply -f $dir/jenkins-persistent-volume-claim.yaml
 if [[ "${cluster_type}" == "cluster" ]];
 then
   helm install stable/jenkins \
+  --version 1.7.6 \
   --name jenkins \
   --namespace ${namespace} \
   --values $dir/values.yaml \
@@ -28,6 +29,7 @@ then
   jenkins_url="https://${host}"
 else
   helm install stable/jenkins \
+  --version 1.7.6 \
   --name jenkins \
   --namespace ${namespace} \
   --values $dir/values.yaml \

@@ -14,6 +14,7 @@ secret_name=$(echo "$host" | sed -e 's/[_\.]/-/g')-tls
 if [[ "${cluster_type}" == "cluster" ]];
 then
   helm install stable/chartmuseum \
+  --version 2.3.2 \
   --name chartmuseum \
   --namespace ${namespace} \
   --values $dir/values.yaml \
@@ -27,6 +28,7 @@ then
   chartmuseum_url="https://${host}"
 else
   helm install stable/chartmuseum \
+  --version 2.3.2 \
   --name chartmuseum \
   --namespace ${namespace} \
   --values $dir/values.yaml \

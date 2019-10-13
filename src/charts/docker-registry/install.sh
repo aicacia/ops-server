@@ -14,6 +14,7 @@ secret_name=$(echo "$host" | sed -e 's/[_\.]/-/g')-tls
 if [[ "${cluster_type}" == "cluster" ]];
 then
   helm install stable/docker-registry \
+  --version 1.8.3 \
   --name docker-registry \
   --namespace ${namespace} \
   --values $dir/values.yaml \
@@ -26,6 +27,7 @@ then
   docker_url="https://${host}"
 else
   helm install stable/docker-registry \
+    --version 1.8.3 \
     --name docker-registry \
     --namespace ${namespace} \
     --values $dir/values.yaml \

@@ -22,6 +22,7 @@ secret_token=$(kubectl get secret -n ${tiller_namespace} $(kubectl get serviceac
 if [[ "${cluster_type}" == "cluster" ]];
 then
   helm install bitnami/kubeapps \
+    --version 2.1.6 \
     --name kubeapps \
     --namespace ${namespace} \
     --values $dir/values.yaml \
@@ -38,6 +39,7 @@ then
   kubeapps_url="https://${host}"  
 else
   helm install bitnami/kubeapps \
+    --version 2.1.6 \
     --name kubeapps \
     --namespace ${namespace} \
     --values $dir/values.yaml \

@@ -16,6 +16,7 @@ helm install stable/metallb \
 if [[ "${cluster_type}" == "cluster" ]];
 then
   helm install stable/nginx-ingress \
+    --version 1.24.3 \
     --name nginx-ingress \
     --namespace ${namespace} \
     --values $dir/values.yaml \
@@ -24,6 +25,7 @@ then
     --set controller.kind=DaemonSet
 else
   helm install stable/nginx-ingress \
+    --version 1.24.3 \
     --name nginx-ingress \
     --namespace ${namespace} \
     --values $dir/values.yaml \
