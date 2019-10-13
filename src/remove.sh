@@ -7,7 +7,7 @@ cluster_name=${cluster_name:-${USER}-local}
 cluster_name=$(echo "${cluster_name}" | sed -e 's/[\ _\.]/-/g')
 
 read -p "Delete kubectl kubelet kubeadm docker helm y/n? [n]:" delete_libs
-cluster_name=${delete_libs:y}
+delete_libs=${delete_libs:-n}
 
 source $dir/functions.sh
 
