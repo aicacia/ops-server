@@ -28,7 +28,6 @@ function init_callback() {
     mkdir -p $(cluster_home)
     touch $(variable_file)
     
-    add_variable "tiller_namespace" "kube-system"
     add_variable "home_dir" ${HOME}
     add_variable "user_name" ${USER}
 }
@@ -66,9 +65,10 @@ function exit_failure() {
 function kubectl_with_environment() {
     local command=$1
     local file=$2
+    local opts=FOO=${3:=""}
 
     envsubst < ${file} > ${file}.bak
-    kubectl ${command} -f ${file}.bak
+    kubectl ${command} -f ${file}.bak ${opts}
     rm ${file}.bak
 }
 

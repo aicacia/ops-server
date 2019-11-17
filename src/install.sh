@@ -54,7 +54,7 @@ then
   ssh_user_home_dir=$(ssh ${ssh_user_name}@${master_node} 'echo $HOME')
 
   scp -q -r $dir ${ssh_user_name}@${master_node}:build
-  ssh ${ssh_user_name}@${master_node} "./build/cluster/install.sh master ${cluster_name} ${ssh_user_name} ${ssh_user_home_dir} ${tiller_namespace}"
+  ssh ${ssh_user_name}@${master_node} "./build/cluster/install.sh master ${cluster_type} ${cluster_name} ${ssh_user_name} ${ssh_user_home_dir}"
   
   discovery_token=$(ssh ${ssh_user_name}@${master_node} "kubeadm token list | grep \"kubeadm init\" | cut -d' ' -f 1")
   add_variable "discovery_token" ${discovery_token}
@@ -86,7 +86,7 @@ then
 
     scp -q -r $dir ${ssh_user_name}@${node}:build
     ssh ${ssh_user_name}@${node} "build/cluster/install.sh \
-      slave ${cluster_name} ${ssh_user_name} ${ssh_user_home_dir} ${tiller_namespace} ${discovery_token} ${discovery_token_hash} ${api_server_address}"
+      slave ${cluster_type} ${cluster_name} ${ssh_user_name} ${ssh_user_home_dir} ${discovery_token} ${discovery_token_hash} ${api_server_address}"
 
     node_name=$(ssh ${ssh_user_name}@${node} hostname)
     kubectl label nodes ${node_name} kubernetes.io/cluster-name=${cluster_name}
@@ -99,11 +99,11 @@ then
 
   if [! type "kubectl" > /dev/null ] || [! type "helm" > /dev/null ]; 
   then
-    sudo $dir/cluster/install.sh no_cluster ${cluster_name} ${user_name} ${home_dir} ${tiller_namespace}
+    sudo $dir/cluster/install.sh no_cluster ${cluster_name} ${user_name} ${home_dir}
   fi
   $dir/charts/install.sh ${cluster_name}
 else
-  sudo $dir/cluster/install.sh master ${cluster_name} ${user_name} ${home_dir} ${tiller_namespace}
+  sudo $dir/cluster/install.sh master ${cluster_type} ${cluster_name} ${user_name} ${home_dir}
 
   master_node=$(kubectl get nodes --selector=kubernetes.io/role!=master -o jsonpath={.items[*].status.addresses[?\(@.type==\"InternalIP\"\)].address})
 

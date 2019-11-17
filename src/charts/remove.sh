@@ -7,7 +7,6 @@ source $dir/../functions.sh
 
 if [[ "${cluster_type}" == "cluster" ]];
 then
-  $dir/kubeapps/remove.sh ${cluster_name}
   $dir/jenkins/remove.sh ${cluster_name}
 fi
 

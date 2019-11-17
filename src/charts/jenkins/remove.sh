@@ -2,10 +2,11 @@
 
 dir=$(readlink -f "$(dirname "$0")")
 cluster_name=$1
+namespace=ci
 
 source $dir/../../functions.sh
 
-helm delete --purge jenkins
+helm uninstall jenkins -n ${namespace}
 
-kubectl delete -f $dir/jenkins-persistent-volume-claim.yaml
-kubectl delete -f $dir/jenkins-persistent-volume.yaml
+kubectl delete -f $dir/jenkins-persistent-volume-claim.yaml -n ${namespace}
+kubectl delete -f $dir/jenkins-persistent-volume.yaml -n ${namespace}

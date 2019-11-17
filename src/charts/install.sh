@@ -19,5 +19,4 @@ $dir/kubernetes-dashboard/install.sh ${cluster_name}
 if [[ "${cluster_type}" == "cluster" ]];
 then
   $dir/jenkins/install.sh ${cluster_name}
-  $dir/kubeapps/install.sh ${cluster_name}
 fi

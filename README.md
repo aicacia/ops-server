@@ -1,6 +1,6 @@
 # ops-server
 
-## Turn swap off
+## Turn swap off for non local installs
 
 ```bash
 sudo swapoff -a 
@@ -28,10 +28,20 @@ source .envrc
 
 ## Local
 
-```bash
-./src/run.sh install
-```
+create a cluster
 
 ```bash
-./src/run.sh remove
+./src/install.sh
+```
+
+add/remove nodes in a cluster
+
+```bash
+./src/update.sh
+```
+
+delete a cluster
+
+```bash
+./src/remove.sh
 ```

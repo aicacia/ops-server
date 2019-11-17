@@ -2,7 +2,6 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: jenkins-persistent-volume-claim
-  namespace: ci
 spec:
   storageClassName: ""
   accessModes:

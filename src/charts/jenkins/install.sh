@@ -3,6 +3,7 @@
 dir=$(readlink -f "$(dirname "$0")")
 cluster_name=$1
 namespace=ci
+version=1.9.3
 
 source $dir/../../functions.sh
 
@@ -11,14 +12,15 @@ begin_readme_section "jenkins"
 host="jenkins.$HOST"
 secret_name=$(echo "$host" | sed -e 's/[_\.]/-/g')-tls
 
-kubectl apply -f $dir/jenkins-persistent-volume.yaml
-kubectl apply -f $dir/jenkins-persistent-volume-claim.yaml
+kubectl create namespace ${namespace}
+
+kubectl apply -f $dir/jenkins-persistent-volume.yaml -n ${namespace}
+kubectl apply -f $dir/jenkins-persistent-volume-claim.yaml -n ${namespace}
 
 if [[ "${cluster_type}" == "cluster" ]];
 then
-  helm install stable/jenkins \
-  --version 1.7.6 \
-  --name jenkins \
+  helm install jenkins stable/jenkins \
+  --version ${version} \
   --namespace ${namespace} \
   --values $dir/values.yaml \
   --set master.ingress.hostName=$host \
@@ -28,9 +30,8 @@ then
 
   jenkins_url="https://${host}"
 else
-  helm install stable/jenkins \
-  --version 1.7.6 \
-  --name jenkins \
+  helm install jenkins stable/jenkins \
+  --version ${version} \
   --namespace ${namespace} \
   --values $dir/values.yaml \
   --set master.ingress.hostName=$host

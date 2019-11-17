@@ -51,7 +51,7 @@ then
       scp -q -r $dir ${ssh_user_name}@${node}:build
 
       ssh ${ssh_user_name}@${node} "build/cluster/install.sh \
-        slave ${cluster_name} ${ssh_user_name} ${ssh_user_home_dir} ${tiller_namespace} ${discovery_token} ${discovery_token_hash} ${api_server_address}"
+        slave ${cluster_name} ${ssh_user_name} ${ssh_user_home_dir} ${discovery_token} ${discovery_token_hash} ${api_server_address}"
 
       node_name=$(ssh ${ssh_user_name}@${node} hostname)
       kubectl label nodes ${node_name} kubernetes.io/cluster-name=${cluster_name}
