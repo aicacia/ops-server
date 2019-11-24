@@ -14,19 +14,21 @@ secret_name=$(echo "$host" | sed -e 's/[_\.]/-/g')-tls
 
 kubectl create namespace ${namespace}
 
+kubectl apply -f $dir/persistent-volume.yaml -n ${namespace}
+kubectl apply -f $dir/persistent-volume-claim.yaml -n ${namespace}
+
 if [[ "${cluster_type}" == "cluster" ]];
 then
   helm install docker-registry stable/docker-registry \
   --version ${version} \
   --namespace ${namespace} \
   --values $dir/values.yaml \
-  --set ingress.hosts[0]=$host \
+  --set ingress.annotations."kubernetes\.io/tls-acme"="true" \
   --set ingress.annotations."certmanager\.k8s\.io/cluster-issuer"=$ISSUER_NAME \
+  --set ingress.hosts[0]=$host \
   --set ingress.tls[0].hosts[0]=$host \
   --set ingress.tls[0].secretName=$secret_name \
   --set secrets.htpasswd=$DOCKER_HTPASSWD
-
-  docker_url="https://${host}"
 else
   helm install docker-registry stable/docker-registry \
     --version ${version} \
@@ -34,9 +36,9 @@ else
     --values $dir/values.yaml \
     --set ingress.hosts[0]=$host \
     --set secrets.htpasswd=$DOCKER_HTPASSWD
-
-  docker_url="http://${host}"
 fi
+
+docker_url="https://${host}"
 
 add_variable "docker_url" ${docker_url}
 

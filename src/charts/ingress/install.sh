@@ -13,7 +13,7 @@ kubectl create namespace ${namespace}
 kubectl create namespace ${metallb_namespace}
 
 helm install metallb stable/metallb \
-  --version ${metalib_version}
+  --version ${metalib_version} \
   --namespace ${metallb_namespace} \
   --values $dir/metallb.yaml \
   --set configInline.address-pools[0].addresses[0]=${API_SERVER_HOST}
@@ -23,18 +23,12 @@ then
   helm install nginx-ingress stable/nginx-ingress \
     --version ${version} \
     --namespace ${namespace} \
-    --values $dir/values.yaml \
-    --set controller.hostNetwork=true \
-    --set controller.service.type="" \
-    --set controller.kind=DaemonSet
+    --values $dir/values.yaml
 else
   helm install nginx-ingress stable/nginx-ingress \
     --version ${version} \
     --namespace ${namespace} \
     --values $dir/values.yaml \
-    --set controller.hostNetwork=true \
-    --set controller.service.type="" \
-    --set controller.kind=DaemonSet \
     --set controller.autoscaling.enabled=false
 fi
 

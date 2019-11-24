@@ -14,8 +14,8 @@ secret_name=$(echo "$host" | sed -e 's/[_\.]/-/g')-tls
 
 kubectl create namespace ${namespace}
 
-kubectl apply -f $dir/jenkins-persistent-volume.yaml -n ${namespace}
-kubectl apply -f $dir/jenkins-persistent-volume-claim.yaml -n ${namespace}
+kubectl apply -f $dir/persistent-volume.yaml -n ${namespace}
+kubectl apply -f $dir/persistent-volume-claim.yaml -n ${namespace}
 
 if [[ "${cluster_type}" == "cluster" ]];
 then

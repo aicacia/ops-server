@@ -7,3 +7,6 @@ namespace=ci
 source $dir/../../functions.sh
 
 helm uninstall docker-registry -n ${namespace}
+
+kubectl apply -f $dir/persistent-volume-claim.yaml -n ${namespace}
+kubectl apply -f $dir/persistent-volume.yaml -n ${namespace}

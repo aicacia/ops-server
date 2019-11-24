@@ -7,5 +7,5 @@ metallb_namespace=metallb-system
 
 source $dir/../../functions.sh
 
-helm uninstall metallb -n ${metallb_namespace}
 helm uninstall nginx-ingress -n ${namespace}
+helm uninstall metallb

@@ -13,7 +13,8 @@ api_server_address=$8
 
 kubeadm_version="1.16.3-00"
 kubernetes_images_version="v1.16.3"
-calico_version="v3.10"
+
+cilium_version="1.6.3"
 
 export DEBIAN_FRONTEND=noninteractive
 
@@ -56,7 +57,7 @@ then
     kubectl label nodes ${node_name} kubernetes.io/cluster-name=${cluster_name}
     kubectl label nodes ${node_name} kubeadm.alpha.kubernetes.io/role=master
 
-    kubectl apply -f https://docs.projectcalico.org/${calico_version}/manifests/calico.yaml
+    kubectl create -f https://raw.githubusercontent.com/cilium/cilium/${cilium_version}/install/kubernetes/quick-install.yaml
 elif [[ "${node_type}" == "slave" ]];
 then
     kubeadm join --token "${discovery_token}" --discovery-token-ca-cert-hash "sha256:${discovery_token_hash}" ${api_server_address}
