@@ -97,10 +97,7 @@ then
     end_readme_section "Slave Node ${node}"
   done
 
-  if [! type "kubectl" > /dev/null ] || [! type "helm" > /dev/null ] || [! type "docker" > /dev/null ]; 
-  then
-    sudo $dir/cluster/install.sh no_cluster ${cluster_name} ${user_name} ${home_dir}
-  fi
+  sudo $dir/cluster/install.sh no_cluster ${cluster_name} ${user_name} ${home_dir}
   
   if [[ "${use_flux}" == "y" ]]; then
     $dir/flux/install.sh ${cluster_name}

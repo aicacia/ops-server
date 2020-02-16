@@ -8,8 +8,6 @@ cluster_name=$3
 user_name=$4
 home_dir=$5
 
-source $dir/../../functions.sh
-
 helm_version=3.1.0
 
 if !(hash helm 2>/dev/null); then

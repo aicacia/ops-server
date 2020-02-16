@@ -8,7 +8,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 if ! hash docker 2>/dev/null; then
    apt update
-   apt-get install apt-transport-https ca-certificates curl software-properties-common
+   apt-get install -y apt-transport-https ca-certificates curl software-properties-common
 
    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 
