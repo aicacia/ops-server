@@ -6,6 +6,7 @@ flux_name=flux
 flux_version=1.2.0
 helm_operator_name=helm-operator
 helm_operator_version=0.7.0
+sealed_secrets_version=0.9.7
 namespace=flux
 
 source $dir/../functions.sh
@@ -13,6 +14,11 @@ source $dir/../functions.sh
 echo ""
 read -p "Flux git url [https://gitlab.com/aicacia/ops/ops-flux-local.git]: " flux_git_url
 flux_git_url=${flux_git_url:-https://gitlab.com/aicacia/ops/ops-flux-local.git}
+
+wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.9.7/kubeseal-linux-amd64 -O kubeseal
+install -m 755 kubeseal /usr/local/bin/kubeseal
+rm kubeseal
+kubectl apply -f https://github.com/bitnami-labs/sealed-secrets/releases/download/v${sealed_secrets_version}/controller.yaml
 
 helm repo add fluxcd https://charts.fluxcd.io
 helm repo update

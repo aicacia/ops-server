@@ -12,5 +12,7 @@ helm delete ${flux_name} --namespace ${namespace}
 helm delete ${helm_operator_name} --namespace ${namespace}
 kubectl delete namespace ${namespace}
 helm repo remove fluxcd
-
 kubectl delete -f https://raw.githubusercontent.com/fluxcd/helm-operator/master/deploy/flux-helm-release-crd.yaml
+
+rm /usr/local/bin/kubeseal
+kubectl delete -f https://github.com/bitnami-labs/sealed-secrets/releases/download/v${sealed_secrets_version}/controller.yaml
