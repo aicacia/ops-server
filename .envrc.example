@@ -1,9 +1,0 @@
-export HOST=localhost
-
-export ISSUER_NAME=letsencrypt-staging
-export LETS_ENCRYPT_EMAIL=admin@$HOST.com
-
-export CHART_MUSEUM_USER="admin"
-export CHART_MUSEUM_PASS="password"
-
-export DOCKER_HTPASSWD=

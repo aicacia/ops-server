@@ -27,11 +27,12 @@ then
   cluster_name=$(echo "${cluster_name}" | sed -e 's/[\ _\.]/-/g')
 fi
 
+read -p "Use flux y/n? [y]:" use_flux
+use_flux=${use_flux:-y}
+
 source $dir/functions.sh
 
 install_init_callback
-cp $dir/../.envrc $(envrc_file)
-source $(envrc_file)
 
 add_variable "cluster_type" ${cluster_type}
 add_variable "cluster_name" ${cluster_name}
@@ -49,7 +50,6 @@ then
 
   add_variable "api_server_host" ${master_node}
   add_variable "api_server_address" ${master_node}:6443
-  add_environment_variable "API_SERVER_HOST" ${master_node} $(envrc_file)
 
   ssh_user_home_dir=$(ssh ${ssh_user_name}@${master_node} 'echo $HOME')
 
@@ -62,9 +62,9 @@ then
   discovery_token_hash=$(ssh ${ssh_user_name}@${master_node} "openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'")
   add_variable "discovery_token_hash" ${discovery_token_hash}
 
-  scp -q ${ssh_user_name}@${master_node}:.kube/config $(cluster_home)/${cluster_name}
-  add_environment_variable "KUBECONFIG" $(cluster_home)/${cluster_name} $(envrc_file)
-  export KUBECONFIG=$(cluster_home)/${cluster_name}
+  scp -q ${ssh_user_name}@${master_node}:.kube/config $(cluster_home)/config.yaml
+  add_variable "KUBECONFIG" $(cluster_home)/config.yaml
+  export KUBECONFIG=$(cluster_home)/config.yaml
 
   master_node_name=$(ssh ${ssh_user_name}@${master_node} hostname)
   add_to_readme "master_node_name: ${master_node_name}"
@@ -97,11 +97,14 @@ then
     end_readme_section "Slave Node ${node}"
   done
 
-  if [! type "kubectl" > /dev/null ] || [! type "helm" > /dev/null ]; 
+  if [! type "kubectl" > /dev/null ] || [! type "helm" > /dev/null ] || [! type "docker" > /dev/null ]; 
   then
     sudo $dir/cluster/install.sh no_cluster ${cluster_name} ${user_name} ${home_dir}
   fi
-  $dir/charts/install.sh ${cluster_name}
+  
+  if [[ "${use_flux}" == "y" ]]; then
+    $dir/flux/install.sh ${cluster_name}
+  fi
 else
   sudo $dir/cluster/install.sh master ${cluster_type} ${cluster_name} ${user_name} ${home_dir}
 
@@ -109,9 +112,10 @@ else
 
   add_variable "api_server_host" ${master_node}
   add_variable "api_server_address" ${master_node}:6443
-  add_environment_variable "API_SERVER_HOST" ${master_node} $(envrc_file)
 
-  $dir/charts/install.sh ${cluster_name}
+  if [[ "${use_flux}" == "y" ]]; then
+    $dir/flux/install.sh ${cluster_name}
+  fi
 fi
 
 install_end_callback

@@ -4,9 +4,6 @@ function cluster_home() {
 function variable_file() {
     echo "$(cluster_home)/variable_file.sh"
 }
-function envrc_file() {
-    echo "$(cluster_home)/.envrc"
-}
 function readme_file() {
     echo "$(cluster_home)/README.md"
 }
@@ -15,10 +12,6 @@ function nodes_file() {
     echo "$(cluster_home)/${node_type}.nodes"
 }
 
-if [ -f $(envrc_file) ];
-then
-    source $(envrc_file)
-fi
 if [ -f $(variable_file) ];
 then
     source $(variable_file)

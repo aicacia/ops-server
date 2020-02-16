@@ -1,4 +1,0 @@
-configInline:
-  address-pools:
-    - name: default
-      protocol: layer3

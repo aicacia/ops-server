@@ -1,3 +1,0 @@
-ingressShim:
-  defaultIssuerKind: ClusterIssuer
-  

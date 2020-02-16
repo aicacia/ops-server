@@ -12,10 +12,6 @@ delete_libs=${delete_libs:-n}
 source $dir/functions.sh
 
 remove_init_callback
-cp $dir/../.envrc $(envrc_file)
-source $(envrc_file)
-
-$dir/charts/remove.sh ${cluster_name}
 
 if [[ "${cluster_type}" == "cluster" ]];
 then

@@ -1,5 +1,7 @@
 # ops-server
 
+kubernetes cluster setup
+
 ## Turn swap off for non local installs
 
 ```bash
