@@ -111,6 +111,15 @@ function add_environment_variable() {
     fi
 }
 
+function add_host() {
+    local ip=$1
+    local host=$2
+    local file=/etc/hosts
+
+    sudo sed -i "/${host}/d" ${file}
+    sudo echo "${ip} ${host}" >> ${file}
+}
+
 function begin_readme_section() {
     local title=$1
 

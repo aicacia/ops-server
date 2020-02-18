@@ -109,9 +109,10 @@ else
 
   add_variable "api_server_host" ${master_node}
   add_variable "api_server_address" ${master_node}:6443
+  add_host ${master_node} "local-k8s.com"
 
   if [[ "${use_flux}" == "y" ]]; then
-    $dir/flux/install.sh ${cluster_name}
+    sudo $dir/flux/install.sh ${cluster_name}
   fi
 fi
 
