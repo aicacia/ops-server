@@ -100,7 +100,7 @@ then
   sudo $dir/cluster/install.sh no_cluster ${cluster_name} ${user_name} ${home_dir}
   
   if [[ "${use_flux}" == "y" ]]; then
-    $dir/flux/install.sh ${cluster_name}
+    sudo $dir/flux/install.sh ${cluster_name}
   fi
 else
   sudo $dir/cluster/install.sh master ${cluster_type} ${cluster_name} ${user_name} ${home_dir}
