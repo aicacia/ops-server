@@ -22,7 +22,9 @@ if ! hash docker 2>/dev/null; then
    apt-get install -y docker-ce=${apt_version} docker-ce-cli=${apt_version}
    apt-mark hold docker-ce
 
-   cat > /etc/docker/daemon.json << EOF
+   if [[ "${cluster_type}" == "cluster" ]];
+   then
+      cat > /etc/docker/daemon.json << EOF
 {
   "exec-opts": ["native.cgroupdriver=systemd"],
   "log-driver": "json-file",
@@ -32,6 +34,19 @@ if ! hash docker 2>/dev/null; then
   "storage-driver": "overlay2"
 }
 EOF
+   else
+      cat > /etc/docker/daemon.json << EOF
+{
+  "insecure-registries": ["registry.local-k8s.com"],
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2"
+}
+EOF
+   fi
 
    mkdir -p /etc/systemd/system/docker.service.d
 
