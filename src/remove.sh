@@ -21,7 +21,7 @@ then
   set -f
   for node in $(cat < $(nodes_file "slave"))
   do
-    ssh_user_home_dir=$(ssh ${ssh_user_name}@${master_node} 'echo $HOME')
+    ssh_user_home_dir=$(ssh ${ssh_user_name}@${node} 'echo $HOME')
     ssh ${ssh_user_name}@${node} "build/cluster/remove.sh ${ssh_user_home_dir} ${delete_libs}"
     ssh ${ssh_user_name}@${node} "rm -rf build"
   done

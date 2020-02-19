@@ -11,13 +11,18 @@ namespace=flux
 
 source $dir/../functions.sh
 
+echo "Installing flux in cluster ${cluster_name} using ${KUBECONFIG}"
+
 echo ""
 read -p "Flux git url [https://gitlab.com/aicacia/ops/ops-flux-local.git]: " flux_git_url
 flux_git_url=${flux_git_url:-https://gitlab.com/aicacia/ops/ops-flux-local.git}
 
-wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.9.7/kubeseal-linux-amd64 -O kubeseal
-install -m 755 kubeseal /usr/local/bin/kubeseal
-rm kubeseal
+if ! hash kubeseal 2>/dev/null; then
+  wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.9.7/kubeseal-linux-amd64 -O kubeseal
+  install -m 755 kubeseal /usr/local/bin/kubeseal
+  rm kubeseal
+fi
+
 kubectl apply -f https://github.com/bitnami-labs/sealed-secrets/releases/download/v${sealed_secrets_version}/controller.yaml
 
 helm repo add fluxcd https://charts.fluxcd.io

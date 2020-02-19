@@ -63,8 +63,7 @@ then
   add_variable "discovery_token_hash" ${discovery_token_hash}
 
   scp -q ${ssh_user_name}@${master_node}:.kube/config $(cluster_home)/config.yaml
-  add_variable "KUBECONFIG" $(cluster_home)/config.yaml
-  export KUBECONFIG=$(cluster_home)/config.yaml
+  add_environment_variable "KUBECONFIG" $(cluster_home)/config.yaml $(variable_file)
 
   master_node_name=$(ssh ${ssh_user_name}@${master_node} hostname)
   add_to_readme "master_node_name: ${master_node_name}"
@@ -97,7 +96,7 @@ then
     end_readme_section "Slave Node ${node}"
   done
 
-  sudo $dir/cluster/install.sh no_cluster ${cluster_name} ${user_name} ${home_dir}
+  sudo $dir/cluster/install.sh none no_cluster ${cluster_name} ${user_name} ${home_dir}
   
   if [[ "${use_flux}" == "y" ]]; then
     sudo $dir/flux/install.sh ${cluster_name}
