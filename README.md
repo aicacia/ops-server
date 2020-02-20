@@ -17,18 +17,7 @@ echo "example_hostname" > /etc/hostname
 hostname -F /etc/hostname
 ```
 
-## setup envrc
-
-```bash
-cp .envrc.example .envrc
-# change any necessary variables
-# if direnv is installed
-direnv allow
-# if not
-source .envrc
-```
-
-## Local
+## Running
 
 create a cluster
 
