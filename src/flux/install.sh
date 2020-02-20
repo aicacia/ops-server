@@ -11,8 +11,6 @@ namespace=flux
 
 source $dir/../functions.sh
 
-echo "Installing flux in cluster ${cluster_name} using ${KUBECONFIG}"
-
 echo ""
 read -p "Flux git url [https://gitlab.com/aicacia/ops/ops-flux-local.git]: " flux_git_url
 flux_git_url=${flux_git_url:-https://gitlab.com/aicacia/ops/ops-flux-local.git}
