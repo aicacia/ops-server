@@ -33,10 +33,13 @@ then
   elif [[ "${user_input}" == "2" ]];
   then
     update_type="remove"
+
+    read -p "Delete kubectl kubelet kubeadm docker helm y/n? [n]:" delete_libs
+    delete_libs=${delete_libs:-n}
   else
     echo "Invalid input ${user_input}"
     exit 1
-  fi 
+  fi
 
   IFS=$'\n'
   set -f
@@ -49,9 +52,8 @@ then
       begin_readme_section "Slave Node ${node}"
 
       scp -q -r $dir ${ssh_user_name}@${node}:build
-
       ssh ${ssh_user_name}@${node} "build/cluster/install.sh \
-        slave ${cluster_name} ${ssh_user_name} ${ssh_user_home_dir} ${discovery_token} ${discovery_token_hash} ${api_server_address}"
+        slave ${cluster_type} ${cluster_name} ${ssh_user_name} ${ssh_user_home_dir} ${discovery_token} ${discovery_token_hash} ${api_server_address}"
 
       node_name=$(ssh ${ssh_user_name}@${node} hostname)
       kubectl label nodes ${node_name} kubernetes.io/cluster-name=${cluster_name}
@@ -63,7 +65,7 @@ then
 
       end_readme_section "Slave Node ${node}"
     else
-      ssh ${ssh_user_name}@${node} "build/cluster/remove.sh ${ssh_user_home_dir} y"
+      ssh ${ssh_user_name}@${node} "build/cluster/remove.sh ${ssh_user_home_dir} ${delete_libs}"
       ssh ${ssh_user_name}@${node} "rm -rf build"
 
       node_name=$(ssh ${ssh_user_name}@${node} hostname)
