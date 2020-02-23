@@ -11,4 +11,9 @@ $dir/docker/remove.sh ${delete_libs}
 
 $dir/reset-iptables.sh
 
+if hash docker 2>/dev/null; then
+  systemctl daemon-reload
+  systemctl restart docker
+fi
+
 apt autoremove -y
