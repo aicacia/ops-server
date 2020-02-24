@@ -21,6 +21,7 @@ if ! hash docker 2>/dev/null; then
    apt_version=$(apt-cache madison docker-ce | grep ${docker_version} | head -1 | awk '{print $3}')
    apt-get install -y docker-ce=${apt_version} docker-ce-cli=${apt_version}
    apt-mark hold docker-ce
+   apt-mark hold docker-ce-cli
 
    if [[ "${cluster_type}" == "cluster" ]];
    then
