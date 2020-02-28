@@ -22,7 +22,7 @@ if ! hash kubeadm 2>/dev/null; then
     apt update
     apt_version=$(apt-cache madison kubeadm | grep ${kubernetes_version} | head -1 | awk '{print $3}')
     apt install -y apt-transport-https
-    apt install -y kubelet=${apt_version} kubeadm=${apt_version} kubectl=${apt_version}
+    apt install -y --allow-change-held-packages kubelet=${apt_version} kubeadm=${apt_version} kubectl=${apt_version}
     apt-mark hold kubelet kubeadm kubectl
 fi
 
@@ -34,6 +34,11 @@ then
     else
         kubeadm init --ignore-preflight-errors=Swap --config ${dir}/local-config.yaml
     fi
+
+    mkdir -p $home_dir/.kube
+    cp /etc/kubernetes/admin.conf $home_dir/.kube/config
+    chown $user_name.$user_name $home_dir/.kube/config
+    export KUBECONFIG=$home_dir/.kube/config
 
     echo "Checking API server availability..."
     for i in {1..150}; do # timeout for 5 minutes
@@ -47,18 +52,13 @@ then
         sleep 2
     done
 
-    mkdir -p $home_dir/.kube
-    cp /etc/kubernetes/admin.conf $home_dir/.kube/config
-    chown $user_name.$user_name -R $home_dir/.kube
-
-    node_name=$(hostname)
-
+    node_name=$(hostname | tr '[:upper:]' '[:lower:]')
     kubectl label nodes ${node_name} kubernetes.io/cluster-name=${cluster_name}
     kubectl label nodes ${node_name} kubeadm.alpha.kubernetes.io/role=master
     
     if [[ "${cluster_type}" != "cluster" ]];
     then
-        kubectl taint nodes --all node-role.kubernetes.io/master-
+        kubectl taint node ${node_name} node-role.kubernetes.io/master-
     fi
 
     kubectl create -f https://raw.githubusercontent.com/cilium/cilium/v${cilium_version}/install/kubernetes/quick-install.yaml

@@ -5,6 +5,7 @@ cluster_name=$1
 flux_name=flux
 helm_operator_name=helm-operator
 namespace=flux
+sealed_secrets_version=0.9.7
 
 source $dir/../functions.sh
 

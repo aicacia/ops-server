@@ -116,8 +116,8 @@ function add_host() {
     local host=$2
     local file=/etc/hosts
 
-    runuser -l root -c "sed -i \"/${host}/d\" ${file}"
-    runuser -l root -c "echo \"${ip} ${host}\" >> ${file}"
+    sudo runuser -l root -c "sed -i \"/${host}/d\" ${file}"
+    sudo runuser -l root -c "echo \"${ip} ${host}\" >> ${file}"
 }
 
 function begin_readme_section() {

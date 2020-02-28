@@ -104,6 +104,9 @@ then
 else
   sudo $dir/cluster/install.sh master ${cluster_type} ${cluster_name} ${user_name} ${home_dir}
 
+  cp ${home_dir}/.kube/config $(cluster_home)/config.yaml
+  add_environment_variable "KUBECONFIG" $(cluster_home)/config.yaml $(variable_file)
+
   master_node=$(kubectl get nodes --selector=kubernetes.io/role!=master -o jsonpath={.items[*].status.addresses[?\(@.type==\"InternalIP\"\)].address})
 
   add_variable "api_server_host" ${master_node}

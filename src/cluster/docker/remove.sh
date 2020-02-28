@@ -7,4 +7,5 @@ if [[ "${delete_libs}" == "y" ]]; then
   rm -rf /var/lib/docker
   rm -rf /etc/docker
   rm -rf /etc/systemd/system/docker.service.d
+  groupdel docker
 fi
