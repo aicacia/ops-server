@@ -11,7 +11,7 @@ discovery_token=$6
 discovery_token_hash=$7
 api_server_address=$8
 
-kubernetes_version="1.17.3"
+kubernetes_version="1.17.4"
 cilium_version="1.7"
 
 export DEBIAN_FRONTEND=noninteractive
