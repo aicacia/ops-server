@@ -27,7 +27,7 @@ helm repo add fluxcd https://charts.fluxcd.io
 helm repo update
 
 kubectl create namespace ${namespace}
-kubectl apply -f https://raw.githubusercontent.com/fluxcd/helm-operator/master/deploy/flux-helm-release-crd.yaml --namespace ${namespace}
+kubectl apply -f https://raw.githubusercontent.com/fluxcd/helm-operator/master/deploy/crds.yaml --namespace ${namespace}
 
 helm upgrade ${helm_operator_name} fluxcd/helm-operator \
   --version ${helm_operator_version} \
