@@ -99,7 +99,7 @@ then
   sudo $dir/cluster/install.sh none no_cluster ${cluster_name} ${user_name} ${home_dir}
   
   if [[ "${use_flux}" == "y" ]]; then
-    sudo $dir/flux/install.sh ${cluster_name}
+    sudo $dir/flux/install.sh ${cluster_name} ${home_dir}
   fi
 else
   sudo $dir/cluster/install.sh master ${cluster_type} ${cluster_name} ${user_name} ${home_dir}
@@ -116,7 +116,7 @@ else
   add_host "127.0.0.1" "registry.local-k8s.com"
 
   if [[ "${use_flux}" == "y" ]]; then
-    sudo $dir/flux/install.sh ${cluster_name}
+    sudo $dir/flux/install.sh ${cluster_name} ${home_dir}
   fi
 fi
 

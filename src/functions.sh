@@ -55,35 +55,6 @@ function exit_failure() {
     exit 1
 }
 
-function kubectl_with_environment() {
-    local command=$1
-    local file=$2
-    local opts=FOO=${3:=""}
-
-    envsubst < ${file} > ${file}.bak
-    kubectl ${command} -f ${file}.bak ${opts}
-    rm ${file}.bak
-}
-
-function wait_for_deployment() {
-    local deployment=$1
-    local namespace=$2
-
-    echo "Ensuring ${deployment} is succesfully deployed..."
-    while true
-    do
-        kubectl rollout status deploy/${deployment} -n ${namespace}
-        if [[ $? -ne 0 ]]
-        then
-            sleep 5
-        else
-            break;
-        fi
-    done
-
-    echo "${deployment} is available."
-}
-
 function add_variable() {
     local variable=$1
     local value=$2
@@ -171,11 +142,6 @@ function is_valid_ip() {
     fi
     
     return $stat
-}
-
-function execute_as_user() {
-    local command=$1
-    su -c "${command}" - ${user_name}
 }
 
 function get_host() {

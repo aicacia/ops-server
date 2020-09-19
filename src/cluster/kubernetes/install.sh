@@ -11,8 +11,8 @@ discovery_token=$6
 discovery_token_hash=$7
 api_server_address=$8
 
-kubernetes_version="1.17.4"
-cilium_version="1.7"
+kubernetes_version="1.19.2"
+cilium_version="1.8.3"
 
 export DEBIAN_FRONTEND=noninteractive
 
@@ -32,7 +32,10 @@ then
     then
         kubeadm init --kubernetes-version=${kubernetes_version} --token-ttl 0
     else
+        export kubernetes_version=${kubernetes_version}
+        envsubst < ${dir}/local-config.tmpl.yaml >> ${dir}/local-config.yaml
         kubeadm init --ignore-preflight-errors=Swap --config ${dir}/local-config.yaml
+        rm ${dir}/local-config.yaml
     fi
 
     mkdir -p $home_dir/.kube
