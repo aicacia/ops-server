@@ -52,6 +52,7 @@ then
       begin_readme_section "Slave Node ${node}"
 
       scp -q -r $dir ${ssh_user_name}@${node}:build
+      ssh ${ssh_user_name}@${node} "build/lib/install.sh ${cluster_type} ${ssh_user_name}"
       ssh ${ssh_user_name}@${node} "build/cluster/install.sh \
         slave ${cluster_type} ${cluster_name} ${ssh_user_name} ${ssh_user_home_dir} ${discovery_token} ${discovery_token_hash} ${api_server_address}"
 
@@ -65,8 +66,13 @@ then
 
       end_readme_section "Slave Node ${node}"
     else
-      ssh ${ssh_user_name}@${node} "build/cluster/remove.sh ${ssh_user_home_dir} ${delete_libs}"
-      ssh ${ssh_user_name}@${node} "rm -rf build"
+      if [[ "${delete_libs}" == "y" ]]; then
+        ssh ${ssh_user_name}@${node} "build/lib/remove.sh"
+        ssh ${ssh_user_name}@${node} "rm -rf build"
+      else
+        ssh ${ssh_user_name}@${node} "build/cluster/remove.sh ${ssh_user_home_dir}"
+        ssh ${ssh_user_name}@${node} "build/flux/remove.sh ${cluster_name}"
+      fi
 
       node_name=$(ssh ${ssh_user_name}@${node} hostname)
       kubectl delete node ${node_name}

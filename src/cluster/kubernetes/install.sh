@@ -12,19 +12,8 @@ discovery_token_hash=$7
 api_server_address=$8
 
 kubernetes_version="1.19.2"
-cilium_version="1.8.3"
 
 export DEBIAN_FRONTEND=noninteractive
-
-if ! hash kubeadm 2>/dev/null; then
-    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg -s | apt-key add -
-    echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
-    apt update
-    apt_version=$(apt-cache madison kubeadm | grep ${kubernetes_version} | head -1 | awk '{print $3}')
-    apt install -y apt-transport-https
-    apt install -y --allow-change-held-packages kubelet=${apt_version} kubeadm=${apt_version} kubectl=${apt_version}
-    apt-mark hold kubelet kubeadm kubectl
-fi
 
 if [[ "${node_type}" == "master" ]];
 then
@@ -63,8 +52,6 @@ then
     then
         kubectl taint node ${node_name} node-role.kubernetes.io/master-
     fi
-
-    kubectl create -f https://raw.githubusercontent.com/cilium/cilium/v${cilium_version}/install/kubernetes/quick-install.yaml
 elif [[ "${node_type}" == "slave" ]];
 then
     kubeadm join --token "${discovery_token}" --discovery-token-ca-cert-hash "sha256:${discovery_token_hash}" ${api_server_address}

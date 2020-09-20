@@ -2,12 +2,6 @@
 
 dir=$(readlink -f "$(dirname "$0")")
 
-node_type=$1
-cluster_type=$2
-cluster_name=$3
-user_name=$4
-home_dir=$5
-
 helm_version=3.3.3
 
 if ! hash helm 2>/dev/null; then

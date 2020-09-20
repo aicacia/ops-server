@@ -1,7 +1,7 @@
 #!/bin/bash
 
-user_name=$1
-cluster_type=$2
+cluster_type=$1
+user_name=$2
 
 docker_version="19.03"
 
@@ -22,7 +22,9 @@ if ! hash docker 2>/dev/null; then
   apt_version=$(apt-cache madison docker-ce | grep ${docker_version} | head -1 | awk '{print $3}')
   apt-get install -y --allow-change-held-packages docker-ce=${apt_version} docker-ce-cli=${apt_version} containerd.io
   apt-mark hold docker-ce docker-ce-cli
+fi
 
+if grep -q ["native.cgroupdriver=systemd"] /etc/docker/daemon.json; then
   if [[ "${cluster_type}" == "cluster" ]];
   then
     cat > /etc/docker/daemon.json << EOF
@@ -35,7 +37,7 @@ if ! hash docker 2>/dev/null; then
   "storage-driver": "overlay2"
 }
 EOF
-   else
+    else
       cat > /etc/docker/daemon.json << EOF
 {
   "insecure-registries": ["registry.local-k8s.com"],
@@ -48,13 +50,15 @@ EOF
 }
 EOF
   fi
+fi
 
-  mkdir -p /etc/systemd/system/docker.service.d
+mkdir -p /etc/systemd/system/docker.service.d
 
-  systemctl daemon-reload
-  systemctl restart docker
-  systemctl enable docker
+systemctl daemon-reload
+systemctl restart docker
+systemctl enable docker
 
+if getent group docker | grep -q "\b${user_name}\b"; then
   groupadd docker
   usermod -aG docker ${user_name}
   newgrp docker << EOF

@@ -54,12 +54,12 @@ then
   ssh_user_home_dir=$(ssh ${ssh_user_name}@${master_node} 'echo $HOME')
 
   scp -q -r $dir ${ssh_user_name}@${master_node}:build
-  ssh ${ssh_user_name}@${master_node} "./build/cluster/install.sh master ${cluster_type} ${cluster_name} ${ssh_user_name} ${ssh_user_home_dir}"
+  ssh ${ssh_user_name}@${master_node} "./build/lib/install.sh master ${cluster_type} ${cluster_name} ${ssh_user_name} ${ssh_user_home_dir}"
   
   discovery_token=$(ssh ${ssh_user_name}@${master_node} "kubeadm token list | grep \"kubeadm init\" | cut -d' ' -f 1")
   add_variable "discovery_token" ${discovery_token}
 
-  discovery_token_hash=$(ssh ${ssh_user_name}@${master_node} "openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'")
+  discovery_token_hash=$(ssh ${ssh_user_name}@${master_node} "openssl x509 -pubkey -in /etc/lib/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'")
   add_variable "discovery_token_hash" ${discovery_token_hash}
 
   scp -q ${ssh_user_name}@${master_node}:.kube/config $(cluster_home)/config.yaml
@@ -84,6 +84,7 @@ then
     ssh_user_home_dir=$(ssh ${ssh_user_name}@${node} 'echo $HOME')
 
     scp -q -r $dir ${ssh_user_name}@${node}:build
+    ssh ${ssh_user_name}@${node} "build/lib/install.sh ${cluster_type} ${ssh_user_name}"
     ssh ${ssh_user_name}@${node} "build/cluster/install.sh \
       slave ${cluster_type} ${cluster_name} ${ssh_user_name} ${ssh_user_home_dir} ${discovery_token} ${discovery_token_hash} ${api_server_address}"
 
@@ -96,12 +97,14 @@ then
     end_readme_section "Slave Node ${node}"
   done
 
+  sudo $dir/lib/install.sh ${cluster_type} ${user_name}
   sudo $dir/cluster/install.sh none no_cluster ${cluster_name} ${user_name} ${home_dir}
-  
+
   if [[ "${use_flux}" == "y" ]]; then
-    sudo $dir/flux/install.sh ${cluster_name} ${home_dir}
+    $dir/flux/install.sh ${cluster_name}
   fi
 else
+  sudo $dir/lib/install.sh ${cluster_type} ${user_name}
   sudo $dir/cluster/install.sh master ${cluster_type} ${cluster_name} ${user_name} ${home_dir}
 
   cp ${home_dir}/.kube/config $(cluster_home)/config.yaml
@@ -116,7 +119,7 @@ else
   add_host "127.0.0.1" "registry.local-k8s.com"
 
   if [[ "${use_flux}" == "y" ]]; then
-    sudo $dir/flux/install.sh ${cluster_name} ${home_dir}
+    $dir/flux/install.sh ${cluster_name}
   fi
 fi
 
