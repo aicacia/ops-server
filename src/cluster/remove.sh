@@ -10,4 +10,5 @@ systemctl daemon-reload
 systemctl restart docker
 systemctl enable docker
 
-apt autoremove autoclean -y
+apt autoremove -y
+apt autoclean -y
