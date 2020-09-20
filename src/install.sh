@@ -54,7 +54,8 @@ then
   ssh_user_home_dir=$(ssh ${ssh_user_name}@${master_node} 'echo $HOME')
 
   scp -q -r $dir ${ssh_user_name}@${master_node}:build
-  ssh ${ssh_user_name}@${master_node} "./build/lib/install.sh master ${cluster_type} ${cluster_name} ${ssh_user_name} ${ssh_user_home_dir}"
+  ssh ${ssh_user_name}@${master_node} "./build/lib/install.sh ${cluster_type} ${ssh_user_name}"
+  ssh ${ssh_user_name}@${node} "build/cluster/install.sh master ${cluster_type} ${cluster_name} ${ssh_user_name} ${ssh_user_home_dir}"
   
   discovery_token=$(ssh ${ssh_user_name}@${master_node} "kubeadm token list | grep \"kubeadm init\" | cut -d' ' -f 1")
   add_variable "discovery_token" ${discovery_token}
@@ -97,14 +98,14 @@ then
     end_readme_section "Slave Node ${node}"
   done
 
-  sudo $dir/lib/install.sh ${cluster_type} ${user_name}
+  sudo $dir/lib/install.sh ${cluster_type} ${user_name} ${home_dir}
   sudo $dir/cluster/install.sh none no_cluster ${cluster_name} ${user_name} ${home_dir}
 
   if [[ "${use_flux}" == "y" ]]; then
     $dir/flux/install.sh ${cluster_name}
   fi
 else
-  sudo $dir/lib/install.sh ${cluster_type} ${user_name}
+  sudo $dir/lib/install.sh ${cluster_type} ${user_name} ${home_dir}
   sudo $dir/cluster/install.sh master ${cluster_type} ${cluster_name} ${user_name} ${home_dir}
 
   cp ${home_dir}/.kube/config $(cluster_home)/config.yaml

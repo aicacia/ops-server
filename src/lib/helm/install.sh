@@ -2,6 +2,8 @@
 
 dir=$(readlink -f "$(dirname "$0")")
 
+home_dir=$1
+user_name=$2
 helm_version=3.3.3
 
 if ! hash helm 2>/dev/null; then
@@ -11,3 +13,5 @@ if ! hash helm 2>/dev/null; then
   rm -rf linux-amd64
   rm helm.tar.gz
 fi
+
+chown ${user_name}.${user_name} ${home_dir}/.cache/helm

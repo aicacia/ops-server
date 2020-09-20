@@ -22,14 +22,14 @@ then
         kubeadm init --kubernetes-version=${kubernetes_version} --token-ttl 0
     else
         export kubernetes_version=${kubernetes_version}
-        envsubst < ${dir}/local-config.tmpl.yaml >> ${dir}/local-config.yaml
+        envsubst < ${dir}/local-config.tmpl.yaml > ${dir}/local-config.yaml
         kubeadm init --ignore-preflight-errors=Swap --config ${dir}/local-config.yaml
         rm ${dir}/local-config.yaml
     fi
 
     mkdir -p $home_dir/.kube
     cp /etc/kubernetes/admin.conf $home_dir/.kube/config
-    chown $user_name.$user_name $home_dir/.kube/config
+    chown $user_name.$user_name -R $home_dir/.kube
     export KUBECONFIG=$home_dir/.kube/config
 
     echo "Checking API server availability..."
@@ -47,11 +47,7 @@ then
     node_name=$(hostname | tr '[:upper:]' '[:lower:]')
     kubectl label nodes ${node_name} kubernetes.io/cluster-name=${cluster_name}
     kubectl label nodes ${node_name} kubeadm.alpha.kubernetes.io/role=master
-    
-    if [[ "${cluster_type}" != "cluster" ]];
-    then
-        kubectl taint node ${node_name} node-role.kubernetes.io/master-
-    fi
+    kubectl taint node ${node_name} node-role.kubernetes.io/master-
 elif [[ "${node_type}" == "slave" ]];
 then
     kubeadm join --token "${discovery_token}" --discovery-token-ca-cert-hash "sha256:${discovery_token_hash}" ${api_server_address}
