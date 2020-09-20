@@ -51,9 +51,9 @@ EOF
 
   mkdir -p /etc/systemd/system/docker.service.d
 
+  systemctl enable docker
   systemctl daemon-reload
   systemctl restart docker
-  systemctl enable docker
 
   groupadd docker
   usermod -aG docker ${user_name}

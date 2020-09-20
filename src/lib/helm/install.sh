@@ -2,8 +2,8 @@
 
 dir=$(readlink -f "$(dirname "$0")")
 
-home_dir=$1
-user_name=$2
+user_name=$1
+home_dir=$2
 helm_version=3.3.3
 
 if ! hash helm 2>/dev/null; then
