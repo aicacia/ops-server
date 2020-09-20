@@ -24,7 +24,7 @@ if ! hash docker 2>/dev/null; then
   apt-mark hold docker-ce docker-ce-cli
 fi
 
-if grep -q ["native.cgroupdriver=systemd"] /etc/docker/daemon.json; then
+if [ -f /etc/docker/daemon.json ] && [grep -q "native.cgroupdriver=systemd" /etc/docker/daemon.json]; then
   if [[ "${cluster_type}" == "cluster" ]];
   then
     cat > /etc/docker/daemon.json << EOF
