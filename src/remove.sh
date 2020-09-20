@@ -21,29 +21,31 @@ if [[ "${cluster_type}" == "cluster" ]]; then
   for node in $(cat < $(nodes_file "slave"))
   do
     ssh_user_home_dir=$(ssh ${ssh_user_name}@${node} 'echo $HOME')
+
+    ssh ${ssh_user_name}@${node} "build/cluster/remove.sh ${ssh_user_home_dir}"
+
     if [[ "${delete_libs}" == "y" ]]; then
       ssh ${ssh_user_name}@${node} "build/lib/remove.sh"
       ssh ${ssh_user_name}@${node} "rm -rf build"
-    else
-      ssh ${ssh_user_name}@${node} "build/cluster/remove.sh ${ssh_user_home_dir}"
     fi
   done
 
   master_node=$(head -n 1 $(nodes_file "master"))
   ssh_user_home_dir=$(ssh ${ssh_user_name}@${master_node} 'echo $HOME')
+
+  ssh ${ssh_user_name}@${master_node} "build/flux/remove.sh ${cluster_name}"
+  ssh ${ssh_user_name}@${master_node} "build/cluster/remove.sh ${ssh_user_home_dir}"
+
   if [[ "${delete_libs}" == "y" ]]; then
     ssh ${ssh_user_name}@${master_node} "build/lib/remove.sh"
     ssh ${ssh_user_name}@${master_node} "rm -rf build"
-  else
-    ssh ${ssh_user_name}@${master_node} "build/cluster/remove.sh ${ssh_user_home_dir}"
-    ssh ${ssh_user_name}@${master_node} "build/flux/remove.sh ${cluster_name}"
   fi
 else
+  sudo $dir/flux/remove.sh ${cluster_name}
+  sudo $dir/cluster/remove.sh ${home_dir}
+
   if [[ "${delete_libs}" == "y" ]]; then
     sudo $dir/lib/remove.sh
-  else
-    sudo $dir/cluster/remove.sh ${home_dir}
-    sudo $dir/flux/remove.sh ${cluster_name}
   fi
 fi
 

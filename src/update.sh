@@ -66,12 +66,12 @@ then
 
       end_readme_section "Slave Node ${node}"
     else
+      ssh ${ssh_user_name}@${node} "build/cluster/remove.sh ${ssh_user_home_dir}"
+      ssh ${ssh_user_name}@${node} "build/flux/remove.sh ${cluster_name}"
+
       if [[ "${delete_libs}" == "y" ]]; then
         ssh ${ssh_user_name}@${node} "build/lib/remove.sh"
         ssh ${ssh_user_name}@${node} "rm -rf build"
-      else
-        ssh ${ssh_user_name}@${node} "build/cluster/remove.sh ${ssh_user_home_dir}"
-        ssh ${ssh_user_name}@${node} "build/flux/remove.sh ${cluster_name}"
       fi
 
       node_name=$(ssh ${ssh_user_name}@${node} hostname)
