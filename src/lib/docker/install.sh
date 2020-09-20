@@ -22,9 +22,7 @@ if ! hash docker 2>/dev/null; then
   apt_version=$(apt-cache madison docker-ce | grep ${docker_version} | head -1 | awk '{print $3}')
   apt-get install -y --allow-change-held-packages docker-ce=${apt_version} docker-ce-cli=${apt_version} containerd.io
   apt-mark hold docker-ce docker-ce-cli
-fi
 
-if [ -f /etc/docker/daemon.json ] && [grep -q "native.cgroupdriver=systemd" /etc/docker/daemon.json]; then
   if [[ "${cluster_type}" == "cluster" ]];
   then
     cat > /etc/docker/daemon.json << EOF
@@ -37,8 +35,8 @@ if [ -f /etc/docker/daemon.json ] && [grep -q "native.cgroupdriver=systemd" /etc
   "storage-driver": "overlay2"
 }
 EOF
-    else
-      cat > /etc/docker/daemon.json << EOF
+  else
+    cat > /etc/docker/daemon.json << EOF
 {
   "insecure-registries": ["registry.local-k8s.com"],
   "exec-opts": ["native.cgroupdriver=systemd"],
@@ -50,15 +48,13 @@ EOF
 }
 EOF
   fi
-fi
 
-mkdir -p /etc/systemd/system/docker.service.d
+  mkdir -p /etc/systemd/system/docker.service.d
 
-systemctl daemon-reload
-systemctl restart docker
-systemctl enable docker
+  systemctl daemon-reload
+  systemctl restart docker
+  systemctl enable docker
 
-if getent group docker | grep -q "\b${user_name}\b"; then
   groupadd docker
   usermod -aG docker ${user_name}
   newgrp docker << EOF
