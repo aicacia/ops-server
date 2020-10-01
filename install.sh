@@ -27,9 +27,6 @@ then
   cluster_name=$(echo "${cluster_name}" | sed -e 's/[\ _\.]/-/g')
 fi
 
-read -p "Use flux y/n? [y]:" use_flux
-use_flux=${use_flux:-y}
-
 source $dir/functions.sh
 
 install_init_callback
@@ -100,10 +97,6 @@ then
 
   sudo $dir/lib/install.sh ${cluster_type} ${user_name} ${home_dir}
   sudo $dir/cluster/install.sh none no_cluster ${cluster_name} ${user_name} ${home_dir}
-
-  if [[ "${use_flux}" == "y" ]]; then
-    $dir/flux/install.sh ${cluster_name}
-  fi
 else
   sudo $dir/lib/install.sh ${cluster_type} ${user_name} ${home_dir}
   sudo $dir/cluster/install.sh master ${cluster_type} ${cluster_name} ${user_name} ${home_dir}
@@ -118,10 +111,6 @@ else
 
   add_host "127.0.0.1" "local-k8s.com"
   add_host "127.0.0.1" "registry.local-k8s.com"
-
-  if [[ "${use_flux}" == "y" ]]; then
-    $dir/flux/install.sh ${cluster_name}
-  fi
 fi
 
 install_end_callback

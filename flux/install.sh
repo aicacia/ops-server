@@ -1,13 +1,8 @@
 #!/bin/bash
 
-dir=$(readlink -f "$(dirname "$0")")
-
-cluster_name=$1
-flux_version=1.20.2
+flux_version=1.5.0
 helm_operator_version=1.2.0
 namespace=flux
-
-source $dir/../../functions.sh
 
 echo ""
 read -p "Flux git url [https://gitlab.com/aicacia/ops/ops-flux-local.git]: " flux_git_url

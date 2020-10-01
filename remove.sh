@@ -33,7 +33,6 @@ if [[ "${cluster_type}" == "cluster" ]]; then
   master_node=$(head -n 1 $(nodes_file "master"))
   ssh_user_home_dir=$(ssh ${ssh_user_name}@${master_node} 'echo $HOME')
 
-  ssh ${ssh_user_name}@${master_node} "build/flux/remove.sh ${cluster_name}"
   ssh ${ssh_user_name}@${master_node} "build/cluster/remove.sh ${ssh_user_home_dir}"
 
   if [[ "${delete_libs}" == "y" ]]; then
@@ -41,7 +40,6 @@ if [[ "${cluster_type}" == "cluster" ]]; then
     ssh ${ssh_user_name}@${master_node} "rm -rf build"
   fi
 else
-  sudo $dir/flux/remove.sh ${cluster_name}
   sudo $dir/cluster/remove.sh ${home_dir}
 
   if [[ "${delete_libs}" == "y" ]]; then
