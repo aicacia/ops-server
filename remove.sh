@@ -40,10 +40,10 @@ if [[ "${cluster_type}" == "cluster" ]]; then
     ssh ${ssh_user_name}@${master_node} "rm -rf build"
   fi
 else
-  sudo $dir/cluster/remove.sh ${home_dir}
+  $dir/cluster/remove.sh ${home_dir}
 
   if [[ "${delete_libs}" == "y" ]]; then
-    sudo $dir/lib/remove.sh
+    $dir/lib/remove.sh
   fi
 fi
 

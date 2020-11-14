@@ -3,10 +3,10 @@
 home_dir=$1
 
 kubeadm reset -f
-rm -rf $home_dir/.kube
-iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
+sudo rm -rf $home_dir/.kube
+sudo iptables -F && sudo iptables -t nat -F && sudo iptables -t mangle -F && sudo iptables -X
 
 if ! hash ipvsadm 2>/dev/null; then
-  apt install ipvsadm
+  sudo apt install ipvsadm
 fi
-ipvsadm -C
+sudo ipvsadm -C

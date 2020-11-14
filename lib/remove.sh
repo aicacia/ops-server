@@ -7,4 +7,4 @@ $dir/kubeseal/remove.sh
 $dir/helm/remove.sh
 $dir/docker/remove.sh
 
-apt autoremove -y
+sudo apt autoremove -y

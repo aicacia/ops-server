@@ -11,4 +11,5 @@ discovery_token=$6
 discovery_token_hash=$7
 api_server_address=$8
 
+$dir/docker/install.sh ${cluster_type}
 $dir/kubernetes/install.sh ${node_type} ${cluster_type} ${cluster_name} ${user_name} ${home_dir} ${discovery_token} ${discovery_token_hash} ${api_server_address}

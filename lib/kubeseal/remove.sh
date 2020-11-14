@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rm /usr/local/bin/kubeseal
+sudo rm /usr/local/bin/kubeseal

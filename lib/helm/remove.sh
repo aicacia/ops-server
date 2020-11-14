@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rm /usr/local/bin/helm
+sudo rm /usr/local/bin/helm
