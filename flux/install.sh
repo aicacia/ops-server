@@ -1,12 +1,19 @@
 #!/bin/bash
 
-flux_version=1.5.0
-helm_operator_version=1.2.0
+flux_version="1.5.0"
+helm_operator_version="1.2.0"
 namespace=flux
 
 echo ""
 read -p "Flux git url [https://gitlab.com/aicacia/ops/ops-flux-local.git]: " flux_git_url
 flux_git_url=${flux_git_url:-https://gitlab.com/aicacia/ops/ops-flux-local.git}
+
+read -p "Install using git repo $flux_git_url y/n? [y]:" use_flux_git_url
+use_flux_git_url=${use_flux_git_url:-y}
+
+if [ "$use_flux_git_url" = "n" ] || [ "$use_flux_git_url" = "N" ]; then
+  exit 1
+fi
 
 helm repo add fluxcd https://charts.fluxcd.io
 helm repo update
