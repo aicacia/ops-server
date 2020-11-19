@@ -6,8 +6,8 @@ home_dir=$1
 
 $dir/kubernetes/remove.sh ${home_dir}
 
-systemctl daemon-reload
-systemctl restart docker
+sudo systemctl daemon-reload
+sudo systemctl restart docker
 
-apt autoremove -y
-apt autoclean -y
+sudo apt autoremove -y
+sudo apt autoclean -y
