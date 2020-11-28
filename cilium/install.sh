@@ -1,6 +1,8 @@
 #!/bin/bash
 
-cilium_version="1.8.5"
+set -e
+
+cilium_version="1.9.0"
 namespace=kube-system
 
 helm repo add cilium https://helm.cilium.io/

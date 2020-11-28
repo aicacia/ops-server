@@ -1,6 +1,8 @@
 #!/bin/bash
 
-flux_version="1.5.0"
+set -e
+
+flux_version="1.6.0"
 helm_operator_version="1.2.0"
 flux_name=flux
 helm_operator_name=helm-operator
@@ -21,7 +23,7 @@ helm repo add fluxcd https://charts.fluxcd.io
 helm repo update
 
 kubectl create namespace ${namespace}
-kubectl create -f https://raw.githubusercontent.com/fluxcd/helm-operator/${helm_operator_version}/deploy/crds.yaml --namespace ${namespace}
+kubectl create -f https://raw.githubusercontent.com/fluxcd/helm-operator/${helm_operator_version}/deploy/crds.yaml
 
 helm upgrade ${helm_operator_name} fluxcd/helm-operator \
   --version ${helm_operator_version} \
