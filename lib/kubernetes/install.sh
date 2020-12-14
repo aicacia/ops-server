@@ -2,7 +2,7 @@
 
 dir=$(readlink -f "$(dirname "$0")")
 
-kubernetes_version="1.19.4"
+kubernetes_version="1.20.0"
 
 export DEBIAN_FRONTEND=noninteractive
 

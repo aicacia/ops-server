@@ -2,7 +2,7 @@
 
 user_name=$1
 
-docker_version="19.03"
+docker_version="20.10.0"
 
 export DEBIAN_FRONTEND=noninteractive
 
