@@ -1,6 +1,7 @@
 #!/bin/bash
 
 user_name=$1
+hold=$2
 
 docker_version="20.10.0"
 
@@ -20,7 +21,10 @@ if ! hash docker 2>/dev/null; then
   sudo apt update
   apt_version=$(sudo apt-cache madison docker-ce | grep ${docker_version} | head -1 | awk '{print $3}')
   sudo apt install -y --allow-change-held-packages docker-ce=${apt_version} docker-ce-cli=${apt_version} containerd.io
-  sudo apt-mark hold docker-ce docker-ce-cli
+
+  if [[ "${hold}" == "y" ]]; then
+    sudo apt-mark hold docker-ce docker-ce-cli
+  fi
 
   sudo groupadd docker
   sudo usermod -aG docker ${user_name}

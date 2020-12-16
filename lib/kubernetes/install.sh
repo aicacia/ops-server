@@ -1,6 +1,7 @@
 #!/bin/bash
 
 dir=$(readlink -f "$(dirname "$0")")
+hold=$1
 
 kubernetes_version="1.20.0"
 
@@ -13,5 +14,8 @@ if ! { [ hash kubelet 2>/dev/null ] && [ hash kubeadm 2>/dev/null ] && [ hash ku
     apt_version=$(sudo apt-cache madison kubeadm | grep ${kubernetes_version} | head -1 | awk '{print $3}')
     sudo apt install -y apt-transport-https
     sudo apt install -y --allow-change-held-packages kubelet=${apt_version} kubeadm=${apt_version} kubectl=${apt_version}
-    sudo apt-mark hold kubelet kubeadm kubectl
+
+    if [[ "${hold}" == "y" ]]; then
+        sudo apt-mark hold kubelet kubeadm kubectl
+    fi
 fi

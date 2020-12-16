@@ -27,6 +27,9 @@ then
   cluster_name=$(echo "${cluster_name}" | sed -e 's/[\ _\.]/-/g')
 fi
 
+read -p "Mark libs as hold y/n? [y]:" hold
+hold=${hold:-y}
+
 source $dir/functions.sh
 
 install_init_callback
@@ -82,7 +85,7 @@ then
     ssh_user_home_dir=$(ssh ${ssh_user_name}@${node} 'echo $HOME')
 
     scp -q -r $dir ${ssh_user_name}@${node}:build
-    ssh ${ssh_user_name}@${node} "build/lib/install.sh ${ssh_user_name} ${ssh_user_home_dir}"
+    ssh ${ssh_user_name}@${node} "build/lib/install.sh ${ssh_user_name} ${ssh_user_home_dir} ${hold}"
     ssh ${ssh_user_name}@${node} "build/cluster/install.sh \
       slave ${cluster_type} ${cluster_name} ${ssh_user_name} ${ssh_user_home_dir} ${discovery_token} ${discovery_token_hash} ${api_server_address}"
 
@@ -95,10 +98,10 @@ then
     end_readme_section "Slave Node ${node}"
   done
 
-  $dir/lib/install.sh ${user_name} ${home_dir}
+  $dir/lib/install.sh ${user_name} ${home_dir} ${hold}
   $dir/cluster/install.sh none no_cluster ${cluster_name} ${user_name} ${home_dir}
 else
-  $dir/lib/install.sh ${user_name} ${home_dir}
+  $dir/lib/install.sh ${user_name} ${home_dir} ${hold}
   $dir/cluster/install.sh master ${cluster_type} ${cluster_name} ${user_name} ${home_dir}
 
   cp ${home_dir}/.kube/config $(cluster_home)/config.yaml
