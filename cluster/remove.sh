@@ -2,7 +2,7 @@
 
 dir=$(readlink -f "$(dirname "$0")")
 
-home_dir=$1
+home_dir=${1:-$HOME}
 
 $dir/kubernetes/remove.sh ${home_dir}
 

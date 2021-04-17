@@ -1,38 +1,17 @@
 # ops-server
 
-kubernetes cluster setup
+kubernetes cluster libs and scripts
 
-## Turn swap off for non local installs
+## Libs
+
+### install docker, helm, kubeadm, flux
 
 ```bash
-sudo swapoff -a
-sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
-sudo reboot
+./lib/install.sh
 ```
 
-## Make sure each node has a unique hostname
+### uninstall
 
 ```bash
-echo "example_hostname" > /etc/hostname
-hostname -F /etc/hostname
-```
-
-## Running
-
-create a cluster
-
-```bash
-./install.sh
-```
-
-add/remove nodes in a cluster
-
-```bash
-./update.sh
-```
-
-delete a cluster
-
-```bash
-./remove.sh
+./lib/remove.sh
 ```
