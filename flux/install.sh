@@ -1,15 +1,20 @@
 #!/bin/bash
 
-read -p "Github User [${GITHUB_USER}]: " owner
-owner=${owner:-"${GITHUB_USER}"}
+read -p "URL [https://github.com/quantu-app/ops-flux]: " repository
+url=${url:-"https://github.com/quantu-app/ops-flux"}
 
-read -p "Github Repo name [ops-flux]: " repository
-repository=${repository:-"ops-flux"}
+read -p "Username: [\$GITHUB_USER]" username
+username=${username:-"$GITHUB_USER"}
 
-read -p "cluster path [clusters/production]: " path
+read -p "Password: [\$GITHUB_TOKEN]" password
+password=${password:-"$GITHUB_TOKEN"}
+
+read -p "Cluster Path [clusters/production]: " path
 path=${path:-"clusters/production"}
 
-flux bootstrap github \
-  --owner=${owner} \
-  --repository=${repository} \
+flux bootstrap git \
+  --url=${url} \
+  --username=${username} \
+  --password=${password} \
+  --token-auth=true \
   --path=${path}
